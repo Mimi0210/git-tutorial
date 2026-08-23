@@ -1,8 +1,10 @@
 {
-  "name": "git-tutorial-lmh",
+  "name": "git-troubleshooting-lab",
   "private": true,
-  "description": "Git tutorial slides + sandbox examples",
+  "description": "Git Troubleshooting Lab — 9 real-world scenarios × CLI, Cursor/VS Code, GitHub Desktop, Fork",
   "scripts": {
+    "build:scenarios": "node scripts/build-scenarios.js",
+    "start": "npx --yes serve . -p 5173",
     "make-example": "node scripts/make-example.js",
     "make-example:list": "node scripts/make-example.js list",
     "make-example:all": "node scripts/make-example.js all",

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Comparison Table — 9 tình huống Git × CLI, Cursor, GitHub Desktop, Fork." />
+  <title>Comparison Table · Git Troubleshooting Lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,500;9..40,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="web/css/app.css" />
+</head>
+<body>
+  <main class="slide" id="slide">
+    <header class="slide__header">
+      <h1 class="slide__title">Comparison Table</h1>
+      <p class="slide__sub">9 tình huống Git · 4 cách xử lý — click ✓ để mở guide / video</p>
+    </header>
+
+    <div class="table-wrap">
+      <table class="compare" id="matrix" aria-label="So sánh 9 tình huống Git theo 4 tool">
+        <thead>
+          <tr>
+            <th scope="col" class="col-feature">Tình huống</th>
+            <th scope="col" class="col-cli">CLI</th>
+            <th scope="col" class="col-cursor">Cursor</th>
+            <th scope="col" class="col-desktop">GitHub Desktop</th>
+            <th scope="col" class="col-fork">Fork</th>
+          </tr>
+        </thead>
+        <tbody id="matrix-body"></tbody>
+      </table>
+    </div>
+
+    <nav class="slide__nav" aria-label="Liên kết nhanh">
+      <a href="index.html">← Tutorial slides</a>
+      <a href="README.md">README</a>
+      <a href="docs/git-basics.md">Docs</a>
+    </nav>
+  </main>
+
+  <div class="overlay" id="overlay" hidden></div>
+  <aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="drawer-title" hidden>
+    <div class="drawer__top">
+      <div>
+        <p class="drawer__kicker" id="drawer-kicker">Scenario</p>
+        <h2 class="drawer__title" id="drawer-title">—</h2>
+      </div>
+      <button type="button" class="close-btn" id="close-drawer" aria-label="Đóng">×</button>
+    </div>
+    <div class="tool-tabs" id="tool-tabs"></div>
+    <div class="video-frame" id="video-frame">
+      <div class="video-placeholder" id="video-placeholder">Chọn tool để xem video</div>
+      <video id="demo-video" controls playsinline style="display:none"></video>
+    </div>
+    <div class="drawer__body">
+      <h3>Key takeaway</h3>
+      <p id="drawer-takeaway">—</p>
+      <h3>Symptom</h3>
+      <p id="drawer-symptom">—</p>
+      <div class="drawer__links" id="drawer-links"></div>
+    </div>
+  </aside>
+
+  <script src="web/js/scenarios-data.js"></script>
+  <script src="web/js/app.js"></script>
+</body>
+</html>

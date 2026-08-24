@@ -11,9 +11,11 @@
 ## Equivalent CLI
 
 ```bash
-git revert <commit>
-# hoặc (local):
-git reset --hard <commit>
+git log --oneline
+git reset HEAD~3
+git reset --hard 4b6bd5d
+git revert <ma_commit_B>
+git push origin main --force
 ```
 
 ## Video

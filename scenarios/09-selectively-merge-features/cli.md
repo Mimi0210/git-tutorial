@@ -4,25 +4,34 @@
 
 ## Steps
 
-### Cách 1 — Cherry-pick
+**Tình huống:** Repo có `dev` và `main`. Chỉ được đưa một số tính năng từ `dev` sang `main`.
+
+Tạo nhánh mới từ `main`, checkout sang nhánh đó, rồi chọn một trong hai cách:
+
+### C1 — Cherry-pick
+
+Lấy đúng commit của tính năng đó:
 
 ```bash
-git switch main
+git checkout main
 git pull origin main
+git checkout -b release-partial
 git log dev --oneline
-git cherry-pick aaa111   # Feature A
-git cherry-pick ccc333   # Feature C
-git push origin main
+git cherry-pick <ma_commit>
+git push origin release-partial
 ```
 
-### Cách 2 — Feature branch độc lập (khuyến nghị)
+### C2 — Merge nhánh tính năng
 
-```text
-feature/A → PR → main
-feature/C → PR → main
+Merge cả nhánh chứa tính năng cần lấy:
+
+```bash
+git checkout main
+git pull origin main
+git checkout -b release-partial
+git merge branch_tinh_nang
+git push origin release-partial
 ```
-
-Tránh nhồi mọi thứ vào một `dev` khổng lồ nếu thường xuyên release từng phần.
 
 ## ⚠️ Warning
 
@@ -31,8 +40,11 @@ Cherry-pick có thể conflict hoặc nhân đôi thay đổi nếu dependency c
 ## Equivalent CLI
 
 ```bash
-git cherry-pick <commit-A>
-git cherry-pick <commit-C>
+git checkout main
+git pull origin main
+git checkout -b release-partial
+git cherry-pick <ma_commit>
+git merge branch_tinh_nang
 ```
 
 ## Video

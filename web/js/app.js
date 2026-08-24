@@ -127,6 +127,12 @@
     return s.short || s.title;
   }
 
+  /** Tool video, or fallback to CLI demo for that scenario. */
+  function videoSrc(scenario, toolKey) {
+    const v = scenario.videos || {};
+    return v[toolKey] || v.cli || null;
+  }
+
   function renderTable() {
     body.innerHTML = "";
 
@@ -153,7 +159,7 @@
         const btn = document.createElement("button");
         btn.type = "button";
         btn.className = `check check--${t.className}`;
-        if (s.videos[t.key]) btn.classList.add("has-video");
+        if (videoSrc(s, t.key)) btn.classList.add("has-video");
         btn.title = `${s.title} — ${t.label}`;
         btn.setAttribute("aria-label", `${s.title} — ${t.label}`);
         btn.innerHTML = CHECK_SVG;
@@ -225,21 +231,31 @@
       toolTabs.appendChild(tab);
     });
 
-    const src = scenario.videos[toolKey];
+    const src = videoSrc(scenario, toolKey);
+    const toolLabel = TOOLS.find((t) => t.key === toolKey).label;
     if (src) {
       placeholder.style.display = "none";
       videoEl.style.display = "block";
       if (videoEl.getAttribute("src") !== src) {
         videoEl.src = src;
       }
+      if (!scenario.videos[toolKey] && scenario.videos.cli) {
+        videoEl.setAttribute(
+          "aria-label",
+          `Video demo CLI — xem trên tab ${toolLabel}`
+        );
+      } else {
+        videoEl.setAttribute("aria-label", `Video demo ${toolLabel}`);
+      }
     } else {
       videoEl.removeAttribute("src");
+      videoEl.removeAttribute("aria-label");
       videoEl.load();
       videoEl.style.display = "none";
       placeholder.style.display = "block";
       placeholder.innerHTML =
-        `Chưa có video cho <strong>${TOOLS.find((t) => t.key === toolKey).label}</strong>.<br/>` +
-        `Thêm <code>demo/videos/${scenario.id}-${toolKey}.mp4</code> rồi cập nhật manifest.`;
+        `Chưa có video cho <strong>${toolLabel}</strong>.<br/>` +
+        `Thêm <code>video/${scenario.id}-${toolKey}.mp4</code> rồi chạy <code>npm run build:scenarios</code>.`;
     }
 
     const base = `scenarios/${scenario.slug}`;

@@ -4,23 +4,32 @@
 
 ## Steps
 
-1. **File → Clone...** để clone repository.
-2. **Repository → Branches** để xem danh sách branch.
-3. Kiểm tra branch hiện tại (highlighted).
-4. Xem **Commit History**.
-5. **Fetch** remote rồi so sánh các branch.
+### Clone
+
+1. **File → Clone...** → dán URL HTTPS hoặc SSH → Clone.
+
+### Tìm branch chính
+
+1. **Repository → Branches** để xem danh sách branch.
+2. Kiểm tra branch hiện tại (highlighted).
+3. Xem **Commit History**.
+4. **Fetch** remote rồi so sánh các branch.
 
 ## Equivalent CLI
 
 ```bash
+git clone git@gitlab.com:group/studybooks-2026.git
+# hoặc HTTPS + PAT:
+git clone https://USERNAME:glpat-xxxxxxxx@gitlab.com/group/studybooks-2026.git
+git remote set-url origin https://USERNAME:glpat-xxxxxxxx@gitlab.com/group/studybooks-2026.git
+cd studybooks-2026
 git branch --show-current
 git branch -a
 git remote show origin
-git branch -r --sort=-committerdate
 ```
 
 ## Video
 
-Đặt file tại `demo/videos/01-fork.mp4` rồi cập nhật link trong web UI.
+Demo: [`video/01-fork.mp4`](../../video/01-fork.mp4)
 
 [← Scenario overview](./README.md) · [All scenarios](../../README.md#scenarios)

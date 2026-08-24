@@ -4,30 +4,38 @@
 
 ## Steps
 
+**Tình huống:** Có 1 commit cần push, và 2 commit trên remote cần pull.
+
+### a. Chưa commit
+
+Stash thay đổi, pull, rồi lấy lại:
+
 ```bash
-git status
+git stash
+git pull
+git stash pop
+```
+
+### b. Đã commit
+
+Reset để lấy lại code, stash, pull, rồi stash pop. Fix conflict nếu có:
+
+```bash
+git reset HEAD~1
+git stash
+git pull
+git stash pop
+```
+
+### c. Cách khác — rebase (linear history)
+
+```bash
 git fetch origin
 git log --oneline --graph --all
 git rebase origin/main
-```
-
-Nếu conflict:
-
-```bash
-git status
-# sửa file →
-git add .
-git rebase --continue
-git push
-```
-
-Nếu branch đã push trước đó và rebase đổi history:
-
-```bash
+# nếu conflict → sửa file → git add . → git rebase --continue
 git push --force-with-lease
 ```
-
-`--force-with-lease` an toàn hơn `--force` vì kiểm tra remote có bị thay đổi ngoài dự kiến.
 
 ## ⚠️ Warning
 
@@ -36,9 +44,14 @@ Tránh `git push --force` trên branch dùng chung. Ưu tiên `--force-with-leas
 ## Equivalent CLI
 
 ```bash
-git fetch origin
-git rebase origin/main
-git push --force-with-lease
+git stash
+git pull
+git stash pop
+# hoặc:
+git reset HEAD~1
+git stash
+git pull
+git stash pop
 ```
 
 ## Video

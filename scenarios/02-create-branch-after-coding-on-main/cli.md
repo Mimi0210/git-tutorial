@@ -4,31 +4,44 @@
 
 ## Steps
 
-### Chưa commit
+**Tình huống:** Đang ở `main`, đã code hoặc đã commit, muốn tách sang nhánh mới để làm merge request.
+
+### a. Chưa commit
+
+Tạo và chuyển sang nhánh mới, rồi tiếp tục:
 
 ```bash
-git status
-git switch -c feature/my-feature
+git checkout -b feature-moi
+# hoặc
+git switch -c feature-moi
 git add .
-git commit -m "Add my feature"
-git push -u origin feature/my-feature
+git commit -m "Add feature"
 ```
 
-Changes chưa commit được giữ trên branch mới.
+**Nhớ:** Phải `add` và `commit`. Nếu không, khi quay lại `main` thay đổi vẫn còn trong working tree.
 
-### Đã commit trên main (chưa push)
+### b. Đã commit — chưa push
+
+Lùi commit gần nhất, rồi tạo nhánh như mục a:
 
 ```bash
-git switch -c feature/my-feature
+git reset HEAD~1
+git checkout -b feature-moi
+git add .
+git commit -m "Add feature"
+```
+
+Hoặc giữ commit trên nhánh mới:
+
+```bash
+git switch -c feature-moi
 git switch main
 git reset --hard HEAD~1
 ```
 
-Branch mới giữ commit; `main` trở lại trạng thái trước đó.
+### c. Đã push
 
-### Đã push lên shared branch
-
-**Không tự ý reset + force push.** Dùng quy trình team (revert / hotfix PR).
+Vẫn dùng `git reset HEAD~1` nếu commit đó chưa được merge — **chỉ trên branch riêng**, không tự ý reset `main` shared.
 
 ## ⚠️ Warning
 
@@ -37,10 +50,9 @@ Branch mới giữ commit; `main` trở lại trạng thái trước đó.
 ## Equivalent CLI
 
 ```bash
-git switch -c feature/my-feature
-git add .
-git commit -m "..."
-git push -u origin feature/my-feature
+git checkout -b feature-moi
+git switch -c feature-moi
+git reset HEAD~1
 ```
 
 ## Video

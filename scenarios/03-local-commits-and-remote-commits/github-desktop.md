@@ -13,9 +13,14 @@
 ## Equivalent CLI
 
 ```bash
-git fetch origin
-git rebase origin/main
-git push --force-with-lease
+git stash
+git pull
+git stash pop
+# hoặc:
+git reset HEAD~1
+git stash
+git pull
+git stash pop
 ```
 
 ## Video

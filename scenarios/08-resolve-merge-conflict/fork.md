@@ -11,10 +11,15 @@
 ## Equivalent CLI
 
 ```bash
-git fetch origin
-git rebase origin/main
-# resolve → git add . && git rebase --continue
-git push --force-with-lease
+git checkout main
+git pull origin main
+git checkout ten_branch
+git merge main
+git checkout --ours .
+git checkout --theirs .
+git add .
+git commit -m "fix conflict"
+git push origin ten_branch
 ```
 
 ## Video

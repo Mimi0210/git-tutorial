@@ -11,8 +11,11 @@
 ## Equivalent CLI
 
 ```bash
-git add package.json
 git commit --amend --no-edit
+git reset HEAD~1
+git add .
+git commit -m "commit"
+git commit --amend -m "tên commit mới"
 ```
 
 ## Video

@@ -11,8 +11,11 @@
 ## Equivalent CLI
 
 ```bash
-git cherry-pick <commit-A>
-git cherry-pick <commit-C>
+git checkout main
+git pull origin main
+git checkout -b release-partial
+git cherry-pick <ma_commit>
+git merge branch_tinh_nang
 ```
 
 ## Video

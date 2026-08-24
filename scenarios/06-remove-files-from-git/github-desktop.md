@@ -12,9 +12,11 @@
 ## Equivalent CLI
 
 ```bash
+git reset HEAD~1
 git rm --cached .env
-git add .gitignore
-git commit -m "chore: ignore local environment files"
+git add .
+git commit -m "commit"
+git push origin main --force
 ```
 
 ## Video

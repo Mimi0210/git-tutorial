@@ -37,8 +37,8 @@ Cần xác định: default branch trên remote + branch team đang active.
 
 - **CLI:** [`video/clone-voi-ssh.mp4`](../../video/clone-voi-ssh.mp4)
 - **Cursor / VS Code:** [`video/clone-voi-pat.mp4`](../../video/clone-voi-pat.mp4)
-- **GitHub Desktop:** _Chưa có video — thêm vào `demo/videos/01-github-desktop.mp4`_
-- **Fork:** _Chưa có video — thêm vào `demo/videos/01-fork.mp4`_
+- **GitHub Desktop:** [`video/01-github-desktop.mp4`](../../video/01-github-desktop.mp4)
+- **Fork:** [`video/01-fork.mp4`](../../video/01-fork.mp4)
 
 ## Key takeaway
 

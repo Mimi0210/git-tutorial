@@ -12,10 +12,9 @@
 ## Equivalent CLI
 
 ```bash
-git switch -c feature/my-feature
-git add .
-git commit -m "..."
-git push -u origin feature/my-feature
+git checkout -b feature-moi
+git switch -c feature-moi
+git reset HEAD~1
 ```
 
 ## Video

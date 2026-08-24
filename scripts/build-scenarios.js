@@ -36,68 +36,100 @@ Cần xác định: default branch trên remote + branch team đang active.`,
     videos: {
       cli: "video/clone-voi-ssh.mp4",
       "cursor-vscode": "video/clone-voi-pat.mp4",
-      "github-desktop": null,
-      fork: null,
+      "github-desktop": "video/01-github-desktop.mp4",
+      fork: "video/01-fork.mp4",
     },
     cli: {
-      steps: `Kiểm tra branch hiện tại:
+      steps: `### 0. Chuẩn bị (trước khi clone)
+
+Đảm bảo tài khoản đã được add vào repo GitLab và có quyền clone / pull / push.
+
+**SSH key** (nếu dùng SSH):
+
+\`\`\`bash
+ls -la ~/.ssh
+ssh-keygen -t ed25519 -C "your.email@example.com"
+cat ~/.ssh/id_ed25519.pub
+# dán vào GitLab → SSH Keys
+\`\`\`
+
+**PAT** (nếu dùng HTTPS): tạo trên GitLab → Access Tokens, lưu token dạng \`glpat-...\`.
+
+### 1. Clone repo
+
+**Cách A — SSH:**
+
+\`\`\`bash
+git clone git@gitlab.com:group/studybooks-2026.git
+cd studybooks-2026
+\`\`\`
+
+**Cách B — HTTPS + PAT:**
+
+\`\`\`bash
+git clone https://USERNAME:glpat-xxxxxxxx@gitlab.com/group/studybooks-2026.git
+cd studybooks-2026
+\`\`\`
+
+Gắn lại remote (nếu cần):
+
+\`\`\`bash
+git remote set-url origin https://USERNAME:glpat-xxxxxxxx@gitlab.com/group/studybooks-2026.git
+git remote -v
+\`\`\`
+
+### 2. Xác định branch đang làm việc
 
 \`\`\`bash
 git branch --show-current
-\`\`\`
-
-Hoặc:
-
-\`\`\`bash
 git status
-\`\`\`
-
-Xem tất cả branch:
-
-\`\`\`bash
 git branch -a
-\`\`\`
-
-Xem remote và branch mặc định:
-
-\`\`\`bash
 git remote show origin
-\`\`\`
-
-Xem các branch gần đây có hoạt động:
-
-\`\`\`bash
 git branch -r --sort=-committerdate
-\`\`\`
-
-Xem lịch sử tổng thể:
-
-\`\`\`bash
 git log --all --decorate --oneline --graph
 \`\`\``,
-      note: `Không nên kết luận chỉ từ commit date. Cần kiểm tra thêm: default branch trên GitHub/GitLab, Pull Requests gần đây, branch protection, CI/CD, README và quy trình branching của team.`,
+      note: `Không đưa token thật lên slide, chat hay commit. Không nên kết luận chỉ từ commit date — kiểm tra thêm default branch trên GitHub/GitLab, PR gần đây, CI/CD và quy trình branching của team.`,
     },
     cursor: {
-      steps: `1. Nhìn **status bar** (góc dưới) để biết branch hiện tại.
+      steps: `### Clone
+
+1. Command Palette (\`Ctrl+Shift+P\` / \`Cmd+Shift+P\`) → \`Git: Clone\` → dán URL HTTPS hoặc SSH.
+2. Hoặc mở integrated terminal và chạy \`git clone\` (SSH hoặc HTTPS + PAT).
+3. **File → Open Folder** vào thư mục vừa clone.
+
+### Tìm branch chính
+
+1. Nhìn **status bar** (góc dưới) để biết branch hiện tại.
 2. Mở **Source Control** → xem branch / remote.
-3. Command Palette (\`Ctrl+Shift+P\` / \`Cmd+Shift+P\`) → \`Git: Checkout to...\` để đổi branch.
-4. Mở integrated terminal và chạy các lệnh CLI tương đương nếu cần xác minh.
+3. Command Palette → \`Git: Checkout to...\` để đổi branch.
+4. Chạy các lệnh CLI tương đương trong terminal nếu cần xác minh.
 
 GUI giúp nhìn branch dễ hơn, nhưng developer vẫn nên hiểu command tương ứng.`,
     },
     desktop: {
-      steps: `1. **File → Clone repository** (hoặc Clone a repository từ welcome).
-2. Nhìn **Current Branch** trên thanh công cụ.
-3. Mở branch dropdown → kiểm tra local/remote branches.
-4. **Fetch origin** để cập nhật danh sách remote.
-5. Mở **History** để so sánh lịch sử commit giữa các branch.`,
+      steps: `### Clone
+
+1. **File → Clone repository** (hoặc Clone a repository từ welcome).
+2. Dán URL HTTPS/SSH → chọn thư mục → **Clone**.
+
+### Tìm branch chính
+
+1. Nhìn **Current Branch** trên thanh công cụ.
+2. Mở branch dropdown → kiểm tra local/remote branches.
+3. **Fetch origin** để cập nhật danh sách remote.
+4. Mở **History** để so sánh lịch sử commit giữa các branch.`,
     },
     fork: {
-      steps: `1. **File → Clone...** để clone repository.
-2. **Repository → Branches** để xem danh sách branch.
-3. Kiểm tra branch hiện tại (highlighted).
-4. Xem **Commit History**.
-5. **Fetch** remote rồi so sánh các branch.`,
+      steps: `### Clone
+
+1. **File → Clone...** → dán URL HTTPS hoặc SSH → Clone.
+
+### Tìm branch chính
+
+1. **Repository → Branches** để xem danh sách branch.
+2. Kiểm tra branch hiện tại (highlighted).
+3. Xem **Commit History**.
+4. **Fetch** remote rồi so sánh các branch.`,
     },
   },
   {
@@ -132,31 +164,44 @@ main
       fork: null,
     },
     cli: {
-      steps: `### Chưa commit
+      steps: `**Tình huống:** Đang ở \`main\`, đã code hoặc đã commit, muốn tách sang nhánh mới để làm merge request.
+
+### a. Chưa commit
+
+Tạo và chuyển sang nhánh mới, rồi tiếp tục:
 
 \`\`\`bash
-git status
-git switch -c feature/my-feature
+git checkout -b feature-moi
+# hoặc
+git switch -c feature-moi
 git add .
-git commit -m "Add my feature"
-git push -u origin feature/my-feature
+git commit -m "Add feature"
 \`\`\`
 
-Changes chưa commit được giữ trên branch mới.
+**Nhớ:** Phải \`add\` và \`commit\`. Nếu không, khi quay lại \`main\` thay đổi vẫn còn trong working tree.
 
-### Đã commit trên main (chưa push)
+### b. Đã commit — chưa push
+
+Lùi commit gần nhất, rồi tạo nhánh như mục a:
 
 \`\`\`bash
-git switch -c feature/my-feature
+git reset HEAD~1
+git checkout -b feature-moi
+git add .
+git commit -m "Add feature"
+\`\`\`
+
+Hoặc giữ commit trên nhánh mới:
+
+\`\`\`bash
+git switch -c feature-moi
 git switch main
 git reset --hard HEAD~1
 \`\`\`
 
-Branch mới giữ commit; \`main\` trở lại trạng thái trước đó.
+### c. Đã push
 
-### Đã push lên shared branch
-
-**Không tự ý reset + force push.** Dùng quy trình team (revert / hotfix PR).`,
+Vẫn dùng \`git reset HEAD~1\` nếu commit đó chưa được merge — **chỉ trên branch riêng**, không tự ý reset \`main\` shared.`,
       warning: `\`git reset --hard\` xóa uncommitted changes trên working tree. Chỉ dùng khi đã chắc chắn.`,
     },
     cursor: {
@@ -209,30 +254,38 @@ A → B
       fork: null,
     },
     cli: {
-      steps: `\`\`\`bash
-git status
+      steps: `**Tình huống:** Có 1 commit cần push, và 2 commit trên remote cần pull.
+
+### a. Chưa commit
+
+Stash thay đổi, pull, rồi lấy lại:
+
+\`\`\`bash
+git stash
+git pull
+git stash pop
+\`\`\`
+
+### b. Đã commit
+
+Reset để lấy lại code, stash, pull, rồi stash pop. Fix conflict nếu có:
+
+\`\`\`bash
+git reset HEAD~1
+git stash
+git pull
+git stash pop
+\`\`\`
+
+### c. Cách khác — rebase (linear history)
+
+\`\`\`bash
 git fetch origin
 git log --oneline --graph --all
 git rebase origin/main
-\`\`\`
-
-Nếu conflict:
-
-\`\`\`bash
-git status
-# sửa file →
-git add .
-git rebase --continue
-git push
-\`\`\`
-
-Nếu branch đã push trước đó và rebase đổi history:
-
-\`\`\`bash
+# nếu conflict → sửa file → git add . → git rebase --continue
 git push --force-with-lease
-\`\`\`
-
-\`--force-with-lease\` an toàn hơn \`--force\` vì kiểm tra remote có bị thay đổi ngoài dự kiến.`,
+\`\`\``,
       warning: `Tránh \`git push --force\` trên branch dùng chung. Ưu tiên \`--force-with-lease\`.`,
     },
     cursor: {
@@ -280,16 +333,15 @@ Modified: file A, B, C
       fork: null,
     },
     cli: {
-      steps: `Bỏ một file:
+      steps: `### Chưa commit — bỏ thay đổi
+
+**Tình huống:** Muốn hoàn tác vài file về trạng thái đã commit.
 
 \`\`\`bash
-git restore path/to/file
-\`\`\`
+git restore tenfile.abc
 
-Bỏ nhiều file:
-
-\`\`\`bash
-git restore file1 file2 file3
+# hoặc
+git checkout tenfile.abc
 \`\`\`
 
 Bỏ toàn bộ working tree:
@@ -298,17 +350,32 @@ Bỏ toàn bộ working tree:
 git restore .
 \`\`\`
 
-Đã staged — unstage rồi restore:
-
-\`\`\`bash
-git restore --staged file.txt
-git restore file.txt
-\`\`\`
-
 An toàn hơn khi chưa chắc:
 
 \`\`\`bash
 git stash
+\`\`\`
+
+### Đã commit — lấy lại nội dung file
+
+Dùng \`git reset HEAD~1\` nếu chỉ cần lùi commit gần nhất, rồi discard file.
+
+Xem danh sách commit:
+
+\`\`\`bash
+git log --oneline
+\`\`\`
+
+Lấy file từ một commit cụ thể (ví dụ \`4b6bd5d\`):
+
+\`\`\`bash
+git checkout 4b6bd5d -- tenfile.abc
+\`\`\`
+
+Lấy file đúng như trên nhánh \`main\`:
+
+\`\`\`bash
+git checkout main -- tenfile.abc
 \`\`\``,
       warning: `\`git restore\` / Discard có thể mất toàn bộ changes chưa commit — không khôi phục được trừ khi đã stash hoặc editor Local History.`,
     },
@@ -350,17 +417,40 @@ After amend:   A → B' (cùng message, thêm file; hash đổi)
       fork: null,
     },
     cli: {
-      steps: `\`\`\`bash
-# sửa file thiếu
+      steps: `**Tình huống:** Commit xong chưa push, nhớ ra thiếu thay đổi — muốn gộp vào commit vừa tạo.
+
+### a. Amend (thêm file)
+
+Sửa file, rồi:
+
+\`\`\`bash
 git add package.json
 git commit --amend --no-edit
 \`\`\`
 
-Đổi message:
+### b. Reset rồi commit lại
 
 \`\`\`bash
-git commit --amend -m "feat: add product page"
-\`\`\``,
+git reset HEAD~1
+git add .
+git commit -m "commit"
+\`\`\`
+
+### c. Sửa commit message (TH10)
+
+\`\`\`bash
+git commit --amend -m "tên commit mới"
+\`\`\`
+
+Hoặc reset rồi commit lại với message đúng:
+
+\`\`\`bash
+git reset HEAD~1
+git add .
+git commit -m "tên commit đúng"
+\`\`\`
+
+**Quy trình này:** Không dùng rebase.`,
       warning: `Không amend commit đã shared. Amend đổi hash → cần force-with-lease nếu đã push branch riêng.`,
     },
     cursor: {
@@ -402,11 +492,22 @@ git commit --amend -m "feat: add product page"
       fork: null,
     },
     cli: {
-      steps: `\`\`\`gitignore
-.env
-*.sql
-node_modules/
+      steps: `**Ví dụ:** File \`.env\`, dump database, hoặc file nhạy cảm khác.
+
+### a. Chưa push
+
+Reset, loại file khỏi staging, thêm vào \`.gitignore\`, rồi commit lại:
+
+\`\`\`bash
+git reset HEAD~1
+# loại file nhạy cảm khỏi staging
+git rm --cached .env
+# thêm vào .gitignore
+git add .
+git commit -m "commit"
 \`\`\`
+
+Hoặc không cần reset — chỉ stop tracking:
 
 \`\`\`bash
 git rm --cached .env
@@ -414,16 +515,20 @@ git add .gitignore
 git commit -m "chore: ignore local environment files"
 \`\`\`
 
-File vẫn trên máy, Git không track nữa.
+### b. Đã push — cần xóa khỏi lịch sử
 
-### Nếu đã push secret
+\`\`\`bash
+git filter-branch --force --index-filter \\
+  "git rm --cached --ignore-unmatch .env" \\
+  --prune-empty --tag-name-filter cat -- --all
 
-1. Rotate / revoke secret ngay.
-2. Remove khỏi branch hiện tại.
-3. Clean history nếu cần (filter-repo / BFG) theo quy trình.
-4. Force push theo approval.
-5. Kiểm tra các clone khác.`,
-      warning: `Xóa file khỏi branch **không** có nghĩa secret biến mất khỏi Git history. Phải rotate secret.`,
+git add .
+git commit -m "remove file .env from git"
+git push origin main --force
+\`\`\`
+
+**Rotate/revoke secret ngay** nếu \`.env\` đã lên remote.`,
+      warning: `\`push --force\` ghi đè lịch sử trên remote. Xóa file khỏi branch không có nghĩa secret biến mất khỏi history — phải rotate secret.`,
     },
     cursor: {
       steps: `1. Thêm pattern vào \`.gitignore\`.
@@ -467,28 +572,39 @@ Hai hướng: **revert** (commit mới đảo ngược) vs **reset** (dời poin
       fork: null,
     },
     cli: {
-      steps: `### Revert (an toàn cho shared)
+      steps: `**Tình huống:** Đã đi từ commit A sang commit B và đã push. Muốn về A để làm lại.
+
+### a. Reset theo số commit
+
+Ví dụ \`4b6bd5d\` cách HEAD 3 commit:
 
 \`\`\`bash
-git revert <commit-C>
+git log --oneline
+git reset HEAD~3
+\`\`\`
+
+### b. Reset cứng về đúng commit, rồi force push
+
+\`\`\`bash
+git reset --hard 4b6bd5d
+
+# nếu B là commit vừa tạo:
+git reset --hard HEAD~1
+
+git push origin main --force
+\`\`\`
+
+### c. Revert (an toàn hơn — nhánh dùng chung)
+
+Revert tạo commit mới đảo ngược thay đổi — lịch sử trên remote vẫn còn:
+
+\`\`\`bash
+git revert <ma_commit_B>
 git push
 \`\`\`
 
-### Reset (local / kiểm soát chặt)
-
-\`\`\`bash
-git reset --hard <commit-A>
-# nếu đã push:
-git push --force-with-lease
-\`\`\`
-
-| Tình huống | Nên dùng |
-|---|---|
-| Đã push/shared | \`revert\` |
-| Local chưa push | \`reset\` có thể OK |
-| Giữ history rõ | \`revert\` |
-| Sửa local history | \`reset\` / rebase |`,
-      warning: `\`git reset --hard\` có thể mất uncommitted changes. Force push có thể overwrite remote history.`,
+**Khi nào chọn gì:** Nhánh riêng, chưa ai dựa vào → có thể reset. Nhánh dùng chung → ưu tiên revert.`,
+      warning: `\`reset --hard\` xóa thay đổi chưa commit. \`push --force\` ghi đè remote.`,
     },
     cursor: {
       steps: `1. Git Graph / Timeline → chọn commit.
@@ -529,25 +645,58 @@ main (updated) ─┘
       fork: null,
     },
     cli: {
-      steps: `\`\`\`bash
+      steps: `**Luồng:** Kéo \`main\` → merge vào nhánh của bạn → sửa conflict → push nhánh đó.
+
+\`\`\`bash
+git checkout main
+git pull origin main
+git checkout ten_branch
+git merge main
+
+git add .
+git commit -m "fix conflict"
+git push origin ten_branch
+\`\`\`
+
+**Chú ý:** Push \`ten_branch\`, không phải \`main\`.
+
+### Sửa conflict nhanh
+
+Giữ code của nhánh hiện tại:
+
+\`\`\`bash
+git checkout --ours .
+\`\`\`
+
+Giữ code của nhánh đang merge vào (theirs):
+
+\`\`\`bash
+git checkout --theirs .
+\`\`\`
+
+Sửa từng file rồi commit:
+
+\`\`\`bash
+git add tenfile.abc
+git commit -m "fix-conflict-tenfile.abc"
+\`\`\`
+
+Hoặc sửa hết rồi commit một lần:
+
+\`\`\`bash
+git add .
+git commit -m "fix-conflict-new-branch"
+\`\`\`
+
+### Cách khác — rebase
+
+\`\`\`bash
 git switch feature/login
 git fetch origin
 git rebase origin/main
-git status
-# sửa conflict markers
 git add .
 git rebase --continue
 git push --force-with-lease
-\`\`\`
-
-Conflict markers:
-
-\`\`\`text
-<<<<<<< HEAD
-code from main
-=======
-code from feature
->>>>>>> feature/login
 \`\`\``,
       warning: `Sau rebase feature đã publish cần \`--force-with-lease\`, không force vào \`main\`.`,
     },
@@ -596,25 +745,34 @@ main
       fork: null,
     },
     cli: {
-      steps: `### Cách 1 — Cherry-pick
+      steps: `**Tình huống:** Repo có \`dev\` và \`main\`. Chỉ được đưa một số tính năng từ \`dev\` sang \`main\`.
+
+Tạo nhánh mới từ \`main\`, checkout sang nhánh đó, rồi chọn một trong hai cách:
+
+### C1 — Cherry-pick
+
+Lấy đúng commit của tính năng đó:
 
 \`\`\`bash
-git switch main
+git checkout main
 git pull origin main
+git checkout -b release-partial
 git log dev --oneline
-git cherry-pick aaa111   # Feature A
-git cherry-pick ccc333   # Feature C
-git push origin main
+git cherry-pick <ma_commit>
+git push origin release-partial
 \`\`\`
 
-### Cách 2 — Feature branch độc lập (khuyến nghị)
+### C2 — Merge nhánh tính năng
 
-\`\`\`text
-feature/A → PR → main
-feature/C → PR → main
-\`\`\`
+Merge cả nhánh chứa tính năng cần lấy:
 
-Tránh nhồi mọi thứ vào một \`dev\` khổng lồ nếu thường xuyên release từng phần.`,
+\`\`\`bash
+git checkout main
+git pull origin main
+git checkout -b release-partial
+git merge branch_tinh_nang
+git push origin release-partial
+\`\`\``,
       warning: `Cherry-pick có thể conflict hoặc nhân đôi thay đổi nếu dependency commit không được pick đúng.`,
     },
     cursor: {
@@ -726,15 +884,15 @@ ${videoSection}
 }
 
 const cliHints = {
-  "01": "git branch --show-current\ngit branch -a\ngit remote show origin\ngit branch -r --sort=-committerdate",
-  "02": "git switch -c feature/my-feature\ngit add .\ngit commit -m \"...\"\ngit push -u origin feature/my-feature",
-  "03": "git fetch origin\ngit rebase origin/main\ngit push --force-with-lease",
-  "04": "git restore path/to/file\ngit restore --staged file.txt\ngit stash",
-  "05": "git add package.json\ngit commit --amend --no-edit",
-  "06": "git rm --cached .env\ngit add .gitignore\ngit commit -m \"chore: ignore local environment files\"",
-  "07": "git revert <commit>\n# hoặc (local):\ngit reset --hard <commit>",
-  "08": "git fetch origin\ngit rebase origin/main\n# resolve → git add . && git rebase --continue\ngit push --force-with-lease",
-  "09": "git cherry-pick <commit-A>\ngit cherry-pick <commit-C>",
+  "01": "git clone git@gitlab.com:group/studybooks-2026.git\n# hoặc HTTPS + PAT:\ngit clone https://USERNAME:glpat-xxxxxxxx@gitlab.com/group/studybooks-2026.git\ngit remote set-url origin https://USERNAME:glpat-xxxxxxxx@gitlab.com/group/studybooks-2026.git\ncd studybooks-2026\ngit branch --show-current\ngit branch -a\ngit remote show origin",
+  "02": "git checkout -b feature-moi\ngit switch -c feature-moi\ngit reset HEAD~1",
+  "03": "git stash\ngit pull\ngit stash pop\n# hoặc:\ngit reset HEAD~1\ngit stash\ngit pull\ngit stash pop",
+  "04": "git restore tenfile.abc\ngit checkout tenfile.abc\ngit log --oneline\ngit checkout 4b6bd5d -- tenfile.abc\ngit checkout main -- tenfile.abc",
+  "05": "git commit --amend --no-edit\ngit reset HEAD~1\ngit add .\ngit commit -m \"commit\"\ngit commit --amend -m \"tên commit mới\"",
+  "06": "git reset HEAD~1\ngit rm --cached .env\ngit add .\ngit commit -m \"commit\"\ngit push origin main --force",
+  "07": "git log --oneline\ngit reset HEAD~3\ngit reset --hard 4b6bd5d\ngit revert <ma_commit_B>\ngit push origin main --force",
+  "08": "git checkout main\ngit pull origin main\ngit checkout ten_branch\ngit merge main\ngit checkout --ours .\ngit checkout --theirs .\ngit add .\ngit commit -m \"fix conflict\"\ngit push origin ten_branch",
+  "09": "git checkout main\ngit pull origin main\ngit checkout -b release-partial\ngit cherry-pick <ma_commit>\ngit merge branch_tinh_nang",
 };
 
 for (const s of scenarios) {

@@ -4,11 +4,22 @@
 
 ## Steps
 
-```gitignore
-.env
-*.sql
-node_modules/
+**Ví dụ:** File `.env`, dump database, hoặc file nhạy cảm khác.
+
+### a. Chưa push
+
+Reset, loại file khỏi staging, thêm vào `.gitignore`, rồi commit lại:
+
+```bash
+git reset HEAD~1
+# loại file nhạy cảm khỏi staging
+git rm --cached .env
+# thêm vào .gitignore
+git add .
+git commit -m "commit"
 ```
+
+Hoặc không cần reset — chỉ stop tracking:
 
 ```bash
 git rm --cached .env
@@ -16,26 +27,32 @@ git add .gitignore
 git commit -m "chore: ignore local environment files"
 ```
 
-File vẫn trên máy, Git không track nữa.
+### b. Đã push — cần xóa khỏi lịch sử
 
-### Nếu đã push secret
+```bash
+git filter-branch --force --index-filter \
+  "git rm --cached --ignore-unmatch .env" \
+  --prune-empty --tag-name-filter cat -- --all
 
-1. Rotate / revoke secret ngay.
-2. Remove khỏi branch hiện tại.
-3. Clean history nếu cần (filter-repo / BFG) theo quy trình.
-4. Force push theo approval.
-5. Kiểm tra các clone khác.
+git add .
+git commit -m "remove file .env from git"
+git push origin main --force
+```
+
+**Rotate/revoke secret ngay** nếu `.env` đã lên remote.
 
 ## ⚠️ Warning
 
-Xóa file khỏi branch **không** có nghĩa secret biến mất khỏi Git history. Phải rotate secret.
+`push --force` ghi đè lịch sử trên remote. Xóa file khỏi branch không có nghĩa secret biến mất khỏi history — phải rotate secret.
 
 ## Equivalent CLI
 
 ```bash
+git reset HEAD~1
 git rm --cached .env
-git add .gitignore
-git commit -m "chore: ignore local environment files"
+git add .
+git commit -m "commit"
+git push origin main --force
 ```
 
 ## Video

@@ -12,9 +12,11 @@
 ## Equivalent CLI
 
 ```bash
-git restore path/to/file
-git restore --staged file.txt
-git stash
+git restore tenfile.abc
+git checkout tenfile.abc
+git log --oneline
+git checkout 4b6bd5d -- tenfile.abc
+git checkout main -- tenfile.abc
 ```
 
 ## Video

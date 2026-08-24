@@ -4,38 +4,51 @@
 
 ## Steps
 
-### Revert (an toàn cho shared)
+**Tình huống:** Đã đi từ commit A sang commit B và đã push. Muốn về A để làm lại.
+
+### a. Reset theo số commit
+
+Ví dụ `4b6bd5d` cách HEAD 3 commit:
 
 ```bash
-git revert <commit-C>
+git log --oneline
+git reset HEAD~3
+```
+
+### b. Reset cứng về đúng commit, rồi force push
+
+```bash
+git reset --hard 4b6bd5d
+
+# nếu B là commit vừa tạo:
+git reset --hard HEAD~1
+
+git push origin main --force
+```
+
+### c. Revert (an toàn hơn — nhánh dùng chung)
+
+Revert tạo commit mới đảo ngược thay đổi — lịch sử trên remote vẫn còn:
+
+```bash
+git revert <ma_commit_B>
 git push
 ```
 
-### Reset (local / kiểm soát chặt)
-
-```bash
-git reset --hard <commit-A>
-# nếu đã push:
-git push --force-with-lease
-```
-
-| Tình huống | Nên dùng |
-|---|---|
-| Đã push/shared | `revert` |
-| Local chưa push | `reset` có thể OK |
-| Giữ history rõ | `revert` |
-| Sửa local history | `reset` / rebase |
+**Khi nào chọn gì:** Nhánh riêng, chưa ai dựa vào → có thể reset. Nhánh dùng chung → ưu tiên revert.
 
 ## ⚠️ Warning
 
-`git reset --hard` có thể mất uncommitted changes. Force push có thể overwrite remote history.
+`reset --hard` xóa thay đổi chưa commit. `push --force` ghi đè remote.
 
 ## Equivalent CLI
 
 ```bash
-git revert <commit>
-# hoặc (local):
-git reset --hard <commit>
+git log --oneline
+git reset HEAD~3
+git reset --hard 4b6bd5d
+git revert <ma_commit_B>
+git push origin main --force
 ```
 
 ## Video

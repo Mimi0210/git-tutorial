@@ -4,16 +4,15 @@
 
 ## Steps
 
-Bỏ một file:
+### Chưa commit — bỏ thay đổi
+
+**Tình huống:** Muốn hoàn tác vài file về trạng thái đã commit.
 
 ```bash
-git restore path/to/file
-```
+git restore tenfile.abc
 
-Bỏ nhiều file:
-
-```bash
-git restore file1 file2 file3
+# hoặc
+git checkout tenfile.abc
 ```
 
 Bỏ toàn bộ working tree:
@@ -22,17 +21,32 @@ Bỏ toàn bộ working tree:
 git restore .
 ```
 
-Đã staged — unstage rồi restore:
-
-```bash
-git restore --staged file.txt
-git restore file.txt
-```
-
 An toàn hơn khi chưa chắc:
 
 ```bash
 git stash
+```
+
+### Đã commit — lấy lại nội dung file
+
+Dùng `git reset HEAD~1` nếu chỉ cần lùi commit gần nhất, rồi discard file.
+
+Xem danh sách commit:
+
+```bash
+git log --oneline
+```
+
+Lấy file từ một commit cụ thể (ví dụ `4b6bd5d`):
+
+```bash
+git checkout 4b6bd5d -- tenfile.abc
+```
+
+Lấy file đúng như trên nhánh `main`:
+
+```bash
+git checkout main -- tenfile.abc
 ```
 
 ## ⚠️ Warning
@@ -42,9 +56,11 @@ git stash
 ## Equivalent CLI
 
 ```bash
-git restore path/to/file
-git restore --staged file.txt
-git stash
+git restore tenfile.abc
+git checkout tenfile.abc
+git log --oneline
+git checkout 4b6bd5d -- tenfile.abc
+git checkout main -- tenfile.abc
 ```
 
 ## Video

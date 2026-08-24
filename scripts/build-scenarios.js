@@ -758,16 +758,34 @@ for (const s of scenarios) {
   );
 }
 
-// Export manifest for web UI
-const manifest = scenarios.map((s) => ({
-  id: s.id,
-  slug: s.slug,
-  title: s.title,
-  short: s.short,
-  symptom: s.symptom,
-  videos: s.videos,
-  takeaway: s.takeaway,
-}));
+function guidePayload(body, commands) {
+  return {
+    steps: body.steps || "",
+    commands,
+    warning: body.warning || "",
+    note: body.note || "",
+  };
+}
+
+// Export manifest for web UI (includes per-tool steps + CLI commands)
+const manifest = scenarios.map((s) => {
+  const commands = cliHints[s.id] || "";
+  return {
+    id: s.id,
+    slug: s.slug,
+    title: s.title,
+    short: s.short,
+    symptom: s.symptom,
+    videos: s.videos,
+    takeaway: s.takeaway,
+    guides: {
+      cli: guidePayload(s.cli, commands),
+      "cursor-vscode": guidePayload(s.cursor, commands),
+      "github-desktop": guidePayload(s.desktop, commands),
+      fork: guidePayload(s.fork, commands),
+    },
+  };
+});
 
 write(
   path.join(root, "web", "js", "scenarios-data.js"),

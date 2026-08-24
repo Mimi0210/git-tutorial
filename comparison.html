@@ -11,33 +11,169 @@
   <link rel="stylesheet" href="web/css/app.css" />
 </head>
 <body>
-  <main class="slide" id="slide">
-    <header class="slide__header">
-      <h1 class="slide__title">Comparison Table</h1>
-      <p class="slide__sub">9 tình huống Git · 4 cách xử lý — click ✓ để mở guide / video</p>
-    </header>
+  <div class="deck" id="deck" aria-live="polite">
 
-    <div class="table-wrap">
-      <table class="compare" id="matrix" aria-label="So sánh 9 tình huống Git theo 4 tool">
-        <thead>
-          <tr>
-            <th scope="col" class="col-feature">Tình huống</th>
-            <th scope="col" class="col-cli">CLI</th>
-            <th scope="col" class="col-cursor">Cursor</th>
-            <th scope="col" class="col-desktop">GitHub Desktop</th>
-            <th scope="col" class="col-fork">Fork</th>
-          </tr>
-        </thead>
-        <tbody id="matrix-body"></tbody>
-      </table>
+    <!-- Page 1 — Intro -->
+    <section class="slide page is-active" id="page-intro" aria-label="Git là gì và 4 tool">
+      <header class="slide__header">
+        <p class="slide__kicker">Mở đầu</p>
+        <h1 class="slide__title">Git là gì — và 4 cách làm việc</h1>
+        <p class="slide__sub">Hiểu nền tảng trước khi mở bảng 9 tình huống</p>
+      </header>
+
+      <p class="intro-lead">
+        <strong>Git</strong> là hệ thống quản lý phiên bản (Version Control). Mỗi lần lưu có chủ đích gọi là
+        <strong>commit</strong> — Git ghi lại ai đổi gì, lúc nào, và vì sao. Repo local trên máy; remote (GitLab / GitHub)
+        để team đồng bộ, review và backup.
+      </p>
+
+      <div class="tool-grid" role="list">
+        <article class="tool-card tool-card--cli" role="listitem">
+          <h3>Git CLI</h3>
+          <p>Nền tảng. Mọi GUI đều map về lệnh — biết CLI thì hiểu Git đang làm gì.</p>
+        </article>
+        <article class="tool-card tool-card--cursor" role="listitem">
+          <h3>Cursor / VS Code</h3>
+          <p>Source Control + Merge Editor ngay trong IDE — tiện khi đang code.</p>
+        </article>
+        <article class="tool-card tool-card--desktop" role="listitem">
+          <h3>GitHub Desktop</h3>
+          <p>GUI đơn giản, history dễ nhìn — phù hợp demo và thao tác hàng ngày.</p>
+        </article>
+        <article class="tool-card tool-card--fork" role="listitem">
+          <h3>Fork</h3>
+          <p>GUI mạnh: rebase, cherry-pick, conflict — khi cần kiểm soát graph chi tiết.</p>
+        </article>
+      </div>
+
+      <div class="gui-cli">
+        <div class="gui-cli__col">
+          <h3>Dùng GUI khi</h3>
+          <ul>
+            <li>Cần nhìn branch / history / conflict trực quan</li>
+            <li>Thao tác thường ngày: commit, push, tạo branch, discard</li>
+            <li>Demo hoặc training member mới</li>
+          </ul>
+        </div>
+        <div class="gui-cli__col">
+          <h3>Dùng CLI khi</h3>
+          <ul>
+            <li>Cần chính xác, scriptable, hoặc lệnh GUI không expose đủ</li>
+            <li>Recovery nâng cao: reflog, filter, force-with-lease</li>
+            <li>Muốn hiểu / verify “Equivalent CLI” sau mỗi thao tác GUI</li>
+          </ul>
+        </div>
+      </div>
+
+      <p class="callout callout--tip">
+        <strong>Nguyên tắc</strong>CLI là nền tảng. Biết bấm GUI mà không hiểu command tương ứng → dễ “sửa mù” khi gặp lỗi.
+      </p>
+
+      <nav class="slide__nav" aria-label="Liên kết nhanh">
+        <a href="index.html">← Tutorial slides</a>
+        <a href="docs/git-basics.md">Git basics</a>
+      </nav>
+    </section>
+
+    <!-- Page 2 — Comparison table -->
+    <section class="slide page" id="page-compare" aria-label="Comparison table" hidden>
+      <header class="slide__header">
+        <h1 class="slide__title">Comparison Table</h1>
+        <p class="slide__sub">9 tình huống Git · 4 cách xử lý — click ✓ để mở guide / video</p>
+      </header>
+
+      <div class="table-wrap">
+        <table class="compare" id="matrix" aria-label="So sánh 9 tình huống Git theo 4 tool">
+          <thead>
+            <tr>
+              <th scope="col" class="col-feature">Tình huống</th>
+              <th scope="col" class="col-cli">CLI</th>
+              <th scope="col" class="col-cursor">Cursor</th>
+              <th scope="col" class="col-desktop">GitHub Desktop</th>
+              <th scope="col" class="col-fork">Fork</th>
+            </tr>
+          </thead>
+          <tbody id="matrix-body"></tbody>
+        </table>
+      </div>
+
+      <nav class="slide__nav" aria-label="Liên kết nhanh">
+        <a href="index.html">← Tutorial slides</a>
+        <a href="README.md">README</a>
+        <a href="docs/git-basics.md">Docs</a>
+      </nav>
+    </section>
+
+    <!-- Page 3 — Golden checklist -->
+    <section class="slide page" id="page-checklist" aria-label="Checklist vàng" hidden>
+      <header class="slide__header">
+        <p class="slide__kicker">Trước khi reset / force push / amend</p>
+        <h1 class="slide__title">Checklist “vàng”</h1>
+        <p class="slide__sub">Hỏi đủ 5 câu trước mọi thao tác nguy hiểm</p>
+      </header>
+
+      <ol class="checklist">
+        <li>
+          <span class="checklist__n">01</span>
+          <div>
+            <strong>Đang ở branch nào?</strong>
+            <p><code>git branch --show-current</code> hoặc <code>git status</code> — đừng reset nhầm <code>main</code>.</p>
+          </div>
+        </li>
+        <li>
+          <span class="checklist__n">02</span>
+          <div>
+            <strong>Thay đổi đã commit chưa?</strong>
+            <p>Uncommitted có thể mất hết với <code>reset --hard</code> / discard. Stash hoặc commit trước nếu còn cần.</p>
+          </div>
+        </li>
+        <li>
+          <span class="checklist__n">03</span>
+          <div>
+            <strong>Đã push chưa? Có ai khác đang dùng branch không?</strong>
+            <p>Đã share → ưu tiên <code>revert</code>, tránh force push. Chưa share → reset an toàn hơn.</p>
+          </div>
+        </li>
+        <li>
+          <span class="checklist__n">04</span>
+          <div>
+            <strong>Có cần backup branch không?</strong>
+            <p>Trước khi reset: <code>git branch backup-…</code> — giữ điểm quay lại nếu lỡ tay.</p>
+          </div>
+        </li>
+        <li>
+          <span class="checklist__n">05</span>
+          <div>
+            <strong>File nhạy cảm đã lên remote chưa?</strong>
+            <p><code>.env</code>, token, dump DB — nếu đã push: rotate secret ngay, rồi mới dọn history.</p>
+          </div>
+        </li>
+      </ol>
+
+      <p class="callout callout--warn">
+        <strong>Nhớ</strong>Đọc state trước khi sửa: <code>status</code> → <code>log</code> → <code>branch -vv</code> → rồi mới reset / force.
+      </p>
+
+      <nav class="slide__nav" aria-label="Liên kết nhanh">
+        <a href="docs/recovery.md">Recovery cheat sheet</a>
+        <a href="README.md">README</a>
+      </nav>
+    </section>
+  </div>
+
+  <nav class="pager" aria-label="Chuyển trang">
+    <button type="button" class="pager__btn" id="btn-prev" aria-label="Trang trước" disabled>
+      ← Trước
+    </button>
+    <div class="pager__dots" id="pager-dots" role="tablist" aria-label="Các trang">
+      <button type="button" class="pager__dot is-active" data-page="0" aria-label="Mở đầu" aria-current="true"></button>
+      <button type="button" class="pager__dot" data-page="1" aria-label="Comparison table"></button>
+      <button type="button" class="pager__dot" data-page="2" aria-label="Checklist vàng"></button>
     </div>
-
-    <nav class="slide__nav" aria-label="Liên kết nhanh">
-      <a href="index.html">← Tutorial slides</a>
-      <a href="README.md">README</a>
-      <a href="docs/git-basics.md">Docs</a>
-    </nav>
-  </main>
+    <button type="button" class="pager__btn pager__btn--next" id="btn-next" aria-label="Trang sau">
+      Sau →
+    </button>
+  </nav>
 
   <div class="overlay" id="overlay" hidden></div>
   <aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="drawer-title" hidden>
@@ -54,6 +190,15 @@
       <video id="demo-video" controls playsinline style="display:none"></video>
     </div>
     <div class="drawer__body">
+      <h3 id="drawer-steps-title">Cách thực hiện</h3>
+      <div class="drawer__steps" id="drawer-steps">—</div>
+
+      <h3 id="drawer-commands-title">Lệnh CLI</h3>
+      <pre class="drawer__commands" id="drawer-commands"><code>—</code></pre>
+
+      <div class="drawer__warn" id="drawer-warn" hidden></div>
+      <div class="drawer__note" id="drawer-note" hidden></div>
+
       <h3>Key takeaway</h3>
       <p id="drawer-takeaway">—</p>
       <h3>Symptom</h3>

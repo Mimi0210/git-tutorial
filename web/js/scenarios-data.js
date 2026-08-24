@@ -12,7 +12,33 @@ window.SCENARIOS = [
       "github-desktop": null,
       "fork": null
     },
-    "takeaway": "Luôn kiểm tra default branch, hoạt động gần đây (PR/CI/commit), và quy trình branching của team trước khi bắt đầu code."
+    "takeaway": "Luôn kiểm tra default branch, hoạt động gần đây (PR/CI/commit), và quy trình branching của team trước khi bắt đầu code.",
+    "guides": {
+      "cli": {
+        "steps": "Kiểm tra branch hiện tại:\n\n```bash\ngit branch --show-current\n```\n\nHoặc:\n\n```bash\ngit status\n```\n\nXem tất cả branch:\n\n```bash\ngit branch -a\n```\n\nXem remote và branch mặc định:\n\n```bash\ngit remote show origin\n```\n\nXem các branch gần đây có hoạt động:\n\n```bash\ngit branch -r --sort=-committerdate\n```\n\nXem lịch sử tổng thể:\n\n```bash\ngit log --all --decorate --oneline --graph\n```",
+        "commands": "git branch --show-current\ngit branch -a\ngit remote show origin\ngit branch -r --sort=-committerdate",
+        "warning": "",
+        "note": "Không nên kết luận chỉ từ commit date. Cần kiểm tra thêm: default branch trên GitHub/GitLab, Pull Requests gần đây, branch protection, CI/CD, README và quy trình branching của team."
+      },
+      "cursor-vscode": {
+        "steps": "1. Nhìn **status bar** (góc dưới) để biết branch hiện tại.\n2. Mở **Source Control** → xem branch / remote.\n3. Command Palette (`Ctrl+Shift+P` / `Cmd+Shift+P`) → `Git: Checkout to...` để đổi branch.\n4. Mở integrated terminal và chạy các lệnh CLI tương đương nếu cần xác minh.\n\nGUI giúp nhìn branch dễ hơn, nhưng developer vẫn nên hiểu command tương ứng.",
+        "commands": "git branch --show-current\ngit branch -a\ngit remote show origin\ngit branch -r --sort=-committerdate",
+        "warning": "",
+        "note": ""
+      },
+      "github-desktop": {
+        "steps": "1. **File → Clone repository** (hoặc Clone a repository từ welcome).\n2. Nhìn **Current Branch** trên thanh công cụ.\n3. Mở branch dropdown → kiểm tra local/remote branches.\n4. **Fetch origin** để cập nhật danh sách remote.\n5. Mở **History** để so sánh lịch sử commit giữa các branch.",
+        "commands": "git branch --show-current\ngit branch -a\ngit remote show origin\ngit branch -r --sort=-committerdate",
+        "warning": "",
+        "note": ""
+      },
+      "fork": {
+        "steps": "1. **File → Clone...** để clone repository.\n2. **Repository → Branches** để xem danh sách branch.\n3. Kiểm tra branch hiện tại (highlighted).\n4. Xem **Commit History**.\n5. **Fetch** remote rồi so sánh các branch.",
+        "commands": "git branch --show-current\ngit branch -a\ngit remote show origin\ngit branch -r --sort=-committerdate",
+        "warning": "",
+        "note": ""
+      }
+    }
   },
   {
     "id": "02",
@@ -26,7 +52,33 @@ window.SCENARIOS = [
       "github-desktop": null,
       "fork": null
     },
-    "takeaway": "Uncommitted changes đi theo khi bạn `git switch -c`. Nếu đã commit trên main chưa push: tạo branch tại HEAD rồi reset main về trước commit đó."
+    "takeaway": "Uncommitted changes đi theo khi bạn `git switch -c`. Nếu đã commit trên main chưa push: tạo branch tại HEAD rồi reset main về trước commit đó.",
+    "guides": {
+      "cli": {
+        "steps": "### Chưa commit\n\n```bash\ngit status\ngit switch -c feature/my-feature\ngit add .\ngit commit -m \"Add my feature\"\ngit push -u origin feature/my-feature\n```\n\nChanges chưa commit được giữ trên branch mới.\n\n### Đã commit trên main (chưa push)\n\n```bash\ngit switch -c feature/my-feature\ngit switch main\ngit reset --hard HEAD~1\n```\n\nBranch mới giữ commit; `main` trở lại trạng thái trước đó.\n\n### Đã push lên shared branch\n\n**Không tự ý reset + force push.** Dùng quy trình team (revert / hotfix PR).",
+        "commands": "git switch -c feature/my-feature\ngit add .\ngit commit -m \"...\"\ngit push -u origin feature/my-feature",
+        "warning": "`git reset --hard` xóa uncommitted changes trên working tree. Chỉ dùng khi đã chắc chắn.",
+        "note": ""
+      },
+      "cursor-vscode": {
+        "steps": "1. **Source Control** → menu branch (status bar hoặc `...`).\n2. **Create Branch...** → đặt tên `feature/my-feature`.\n3. Stage + Commit trên branch mới.\n4. Publish branch / Push.\n\nNếu đã commit trên main: tạo branch từ commit hiện tại, rồi checkout main và Reset (hard) về commit trước — chỉ khi chưa push.",
+        "commands": "git switch -c feature/my-feature\ngit add .\ngit commit -m \"...\"\ngit push -u origin feature/my-feature",
+        "warning": "",
+        "note": ""
+      },
+      "github-desktop": {
+        "steps": "1. **Current Branch** → **New Branch...**\n2. Đặt tên feature branch (tạo từ current HEAD).\n3. Commit (nếu chưa) rồi **Publish branch**.\n4. Nếu cần dọn main local: checkout `main` → History → Reset to previous commit (cẩn thận, chưa push).",
+        "commands": "git switch -c feature/my-feature\ngit add .\ngit commit -m \"...\"\ngit push -u origin feature/my-feature",
+        "warning": "",
+        "note": ""
+      },
+      "fork": {
+        "steps": "1. **Branch → New Branch...**\n2. Tạo `feature/...` từ HEAD hiện tại.\n3. Commit + Push branch mới.\n4. Quay lại `main` và reset nếu commit nhầm chưa được share.",
+        "commands": "git switch -c feature/my-feature\ngit add .\ngit commit -m \"...\"\ngit push -u origin feature/my-feature",
+        "warning": "",
+        "note": ""
+      }
+    }
   },
   {
     "id": "03",
@@ -40,7 +92,33 @@ window.SCENARIOS = [
       "github-desktop": null,
       "fork": null
     },
-    "takeaway": "Fetch trước → xem graph → chọn rebase (linear) hoặc merge → resolve → push (`--force-with-lease` nếu đã rebase branch đã publish)."
+    "takeaway": "Fetch trước → xem graph → chọn rebase (linear) hoặc merge → resolve → push (`--force-with-lease` nếu đã rebase branch đã publish).",
+    "guides": {
+      "cli": {
+        "steps": "```bash\ngit status\ngit fetch origin\ngit log --oneline --graph --all\ngit rebase origin/main\n```\n\nNếu conflict:\n\n```bash\ngit status\n# sửa file →\ngit add .\ngit rebase --continue\ngit push\n```\n\nNếu branch đã push trước đó và rebase đổi history:\n\n```bash\ngit push --force-with-lease\n```\n\n`--force-with-lease` an toàn hơn `--force` vì kiểm tra remote có bị thay đổi ngoài dự kiến.",
+        "commands": "git fetch origin\ngit rebase origin/main\ngit push --force-with-lease",
+        "warning": "Tránh `git push --force` trên branch dùng chung. Ưu tiên `--force-with-lease`.",
+        "note": ""
+      },
+      "cursor-vscode": {
+        "steps": "1. Source Control → **Fetch**.\n2. Khi diverge: không chỉ Sync — chọn **Pull (Rebase)** hoặc chạy rebase trong terminal.\n3. Dùng **Merge Editor** nếu có conflict.\n4. Push (`force with lease` nếu cần sau rebase).",
+        "commands": "git fetch origin\ngit rebase origin/main\ngit push --force-with-lease",
+        "warning": "",
+        "note": ""
+      },
+      "github-desktop": {
+        "steps": "1. **Fetch origin**\n2. So sánh History (local vs remote).\n3. **Branch → Rebase current branch** (hoặc Merge tùy policy team).\n4. Resolve conflicts trong editor.\n5. Push (Desktop sẽ cảnh báo nếu cần force).",
+        "commands": "git fetch origin\ngit rebase origin/main\ngit push --force-with-lease",
+        "warning": "",
+        "note": ""
+      },
+      "fork": {
+        "steps": "1. **Fetch**\n2. Xem graph divergence.\n3. **Rebase** lên `origin/main` (hoặc Merge).\n4. Conflict Resolver → sửa → Continue.\n5. Push (`force-with-lease` nếu đã rebase).",
+        "commands": "git fetch origin\ngit rebase origin/main\ngit push --force-with-lease",
+        "warning": "",
+        "note": ""
+      }
+    }
   },
   {
     "id": "04",
@@ -54,7 +132,33 @@ window.SCENARIOS = [
       "github-desktop": null,
       "fork": null
     },
-    "takeaway": "`git restore` hoàn tác working tree về HEAD. Nếu chưa chắc → `git stash` an toàn hơn. Staged cần `--staged` rồi mới restore nội dung."
+    "takeaway": "`git restore` hoàn tác working tree về HEAD. Nếu chưa chắc → `git stash` an toàn hơn. Staged cần `--staged` rồi mới restore nội dung.",
+    "guides": {
+      "cli": {
+        "steps": "Bỏ một file:\n\n```bash\ngit restore path/to/file\n```\n\nBỏ nhiều file:\n\n```bash\ngit restore file1 file2 file3\n```\n\nBỏ toàn bộ working tree:\n\n```bash\ngit restore .\n```\n\nĐã staged — unstage rồi restore:\n\n```bash\ngit restore --staged file.txt\ngit restore file.txt\n```\n\nAn toàn hơn khi chưa chắc:\n\n```bash\ngit stash\n```",
+        "commands": "git restore path/to/file\ngit restore --staged file.txt\ngit stash",
+        "warning": "`git restore` / Discard có thể mất toàn bộ changes chưa commit — không khôi phục được trừ khi đã stash hoặc editor Local History.",
+        "note": ""
+      },
+      "cursor-vscode": {
+        "steps": "1. Source Control → chọn file → xem **diff**.\n2. Click **Discard Changes** trên file (hoặc Discard All).\n3. Một số extension hỗ trợ discard từng hunk.\n4. Unstage: trừ staging rồi discard nếu cần.",
+        "commands": "git restore path/to/file\ngit restore --staged file.txt\ngit stash",
+        "warning": "",
+        "note": ""
+      },
+      "github-desktop": {
+        "steps": "1. Tab **Changes** → chọn file → xem diff.\n2. Right-click → **Discard changes**.\n3. Hoặc discard toàn bộ changes trong changeset.",
+        "commands": "git restore path/to/file\ngit restore --staged file.txt\ngit stash",
+        "warning": "",
+        "note": ""
+      },
+      "fork": {
+        "steps": "1. Working Directory → chọn file → xem diff.\n2. **Discard** file / hunk (nếu hỗ trợ).\n3. Xác nhận trước khi discard hàng loạt.",
+        "commands": "git restore path/to/file\ngit restore --staged file.txt\ngit stash",
+        "warning": "",
+        "note": ""
+      }
+    }
   },
   {
     "id": "05",
@@ -68,7 +172,33 @@ window.SCENARIOS = [
       "github-desktop": null,
       "fork": null
     },
-    "takeaway": "Amend thay thế commit cuối (đổi hash). Chỉ dùng khi commit còn local (hoặc branch riêng bạn kiểm soát)."
+    "takeaway": "Amend thay thế commit cuối (đổi hash). Chỉ dùng khi commit còn local (hoặc branch riêng bạn kiểm soát).",
+    "guides": {
+      "cli": {
+        "steps": "```bash\n# sửa file thiếu\ngit add package.json\ngit commit --amend --no-edit\n```\n\nĐổi message:\n\n```bash\ngit commit --amend -m \"feat: add product page\"\n```",
+        "commands": "git add package.json\ngit commit --amend --no-edit",
+        "warning": "Không amend commit đã shared. Amend đổi hash → cần force-with-lease nếu đã push branch riêng.",
+        "note": ""
+      },
+      "cursor-vscode": {
+        "steps": "1. Sửa + **Stage** file thiếu.\n2. Source Control → menu Commit → **Amend** / Commit (Amend).\n3. Giữ hoặc sửa message.\n4. Push với lease nếu branch đã publish.",
+        "commands": "git add package.json\ngit commit --amend --no-edit",
+        "warning": "",
+        "note": ""
+      },
+      "github-desktop": {
+        "steps": "1. Stage thay đổi còn thiếu.\n2. Bật **Amend previous commit** (checkbox gần Commit).\n3. Commit.\n4. Push (có thể yêu cầu force).",
+        "commands": "git add package.json\ngit commit --amend --no-edit",
+        "warning": "",
+        "note": ""
+      },
+      "fork": {
+        "steps": "1. Stage file.\n2. **Commit → Amend**.\n3. Push (force-with-lease nếu cần).",
+        "commands": "git add package.json\ngit commit --amend --no-edit",
+        "warning": "",
+        "note": ""
+      }
+    }
   },
   {
     "id": "06",
@@ -82,7 +212,33 @@ window.SCENARIOS = [
       "github-desktop": null,
       "fork": null
     },
-    "takeaway": "Stop tracking bằng `git rm --cached` + `.gitignore`. Nếu đã push secret → **rotate/revoke ngay**, rồi mới clean history theo quy trình team."
+    "takeaway": "Stop tracking bằng `git rm --cached` + `.gitignore`. Nếu đã push secret → **rotate/revoke ngay**, rồi mới clean history theo quy trình team.",
+    "guides": {
+      "cli": {
+        "steps": "```gitignore\n.env\n*.sql\nnode_modules/\n```\n\n```bash\ngit rm --cached .env\ngit add .gitignore\ngit commit -m \"chore: ignore local environment files\"\n```\n\nFile vẫn trên máy, Git không track nữa.\n\n### Nếu đã push secret\n\n1. Rotate / revoke secret ngay.\n2. Remove khỏi branch hiện tại.\n3. Clean history nếu cần (filter-repo / BFG) theo quy trình.\n4. Force push theo approval.\n5. Kiểm tra các clone khác.",
+        "commands": "git rm --cached .env\ngit add .gitignore\ngit commit -m \"chore: ignore local environment files\"",
+        "warning": "Xóa file khỏi branch **không** có nghĩa secret biến mất khỏi Git history. Phải rotate secret.",
+        "note": ""
+      },
+      "cursor-vscode": {
+        "steps": "1. Thêm pattern vào `.gitignore`.\n2. Terminal: `git rm --cached <file>`.\n3. Stage `.gitignore` + commit.\n4. Nếu leaked: rotate secret ngoài Git trước.",
+        "commands": "git rm --cached .env\ngit add .gitignore\ngit commit -m \"chore: ignore local environment files\"",
+        "warning": "",
+        "note": ""
+      },
+      "github-desktop": {
+        "steps": "1. Sửa `.gitignore`.\n2. Dùng repo shell / CLI để `git rm --cached` (Desktop không luôn expose đủ).\n3. Commit thay đổi.\n4. Xử lý secret leak theo checklist bảo mật.",
+        "commands": "git rm --cached .env\ngit add .gitignore\ngit commit -m \"chore: ignore local environment files\"",
+        "warning": "",
+        "note": ""
+      },
+      "fork": {
+        "steps": "1. Cập nhật `.gitignore`.\n2. Untrack file (`rm --cached` qua terminal của Fork hoặc UI tương đương).\n3. Commit.\n4. Nếu đã push secret → rotate + clean history.",
+        "commands": "git rm --cached .env\ngit add .gitignore\ngit commit -m \"chore: ignore local environment files\"",
+        "warning": "",
+        "note": ""
+      }
+    }
   },
   {
     "id": "07",
@@ -96,7 +252,33 @@ window.SCENARIOS = [
       "github-desktop": null,
       "fork": null
     },
-    "takeaway": "Đã push/shared → ưu tiên `git revert`. Local chưa share → `reset` có thể phù hợp. Training: hiểu sự khác biệt history."
+    "takeaway": "Đã push/shared → ưu tiên `git revert`. Local chưa share → `reset` có thể phù hợp. Training: hiểu sự khác biệt history.",
+    "guides": {
+      "cli": {
+        "steps": "### Revert (an toàn cho shared)\n\n```bash\ngit revert <commit-C>\ngit push\n```\n\n### Reset (local / kiểm soát chặt)\n\n```bash\ngit reset --hard <commit-A>\n# nếu đã push:\ngit push --force-with-lease\n```\n\n| Tình huống | Nên dùng |\n|---|---|\n| Đã push/shared | `revert` |\n| Local chưa push | `reset` có thể OK |\n| Giữ history rõ | `revert` |\n| Sửa local history | `reset` / rebase |",
+        "commands": "git revert <commit>\n# hoặc (local):\ngit reset --hard <commit>",
+        "warning": "`git reset --hard` có thể mất uncommitted changes. Force push có thể overwrite remote history.",
+        "note": ""
+      },
+      "cursor-vscode": {
+        "steps": "1. Git Graph / Timeline → chọn commit.\n2. **Revert** (tạo commit mới) cho shared branch.\n3. Hoặc Reset (hard/soft) chỉ khi hiểu hậu quả và chưa share / có approval.",
+        "commands": "git revert <commit>\n# hoặc (local):\ngit reset --hard <commit>",
+        "warning": "",
+        "note": ""
+      },
+      "github-desktop": {
+        "steps": "1. **History** → chọn commit.\n2. **Revert this commit** (an toàn).\n3. Reset chỉ dùng có chủ đích trên branch riêng.",
+        "commands": "git revert <commit>\n# hoặc (local):\ngit reset --hard <commit>",
+        "warning": "",
+        "note": ""
+      },
+      "fork": {
+        "steps": "1. Commit History → chọn commit.\n2. **Revert** hoặc **Reset** tùy tình huống.\n3. Push; dùng force-with-lease nếu reset đã publish.",
+        "commands": "git revert <commit>\n# hoặc (local):\ngit reset --hard <commit>",
+        "warning": "",
+        "note": ""
+      }
+    }
   },
   {
     "id": "08",
@@ -110,7 +292,33 @@ window.SCENARIOS = [
       "github-desktop": null,
       "fork": null
     },
-    "takeaway": "Fetch → rebase/merge `main` vào feature → sửa conflict có chủ đích → continue → test → push (`force-with-lease` nếu rebase)."
+    "takeaway": "Fetch → rebase/merge `main` vào feature → sửa conflict có chủ đích → continue → test → push (`force-with-lease` nếu rebase).",
+    "guides": {
+      "cli": {
+        "steps": "```bash\ngit switch feature/login\ngit fetch origin\ngit rebase origin/main\ngit status\n# sửa conflict markers\ngit add .\ngit rebase --continue\ngit push --force-with-lease\n```\n\nConflict markers:\n\n```text\n<<<<<<< HEAD\ncode from main\n=======\ncode from feature\n>>>>>>> feature/login\n```",
+        "commands": "git fetch origin\ngit rebase origin/main\n# resolve → git add . && git rebase --continue\ngit push --force-with-lease",
+        "warning": "Sau rebase feature đã publish cần `--force-with-lease`, không force vào `main`.",
+        "note": ""
+      },
+      "cursor-vscode": {
+        "steps": "1. Pull/rebase `main` vào feature.\n2. Mở **Merge Editor**: Current / Incoming / Result.\n3. Chọn hoặc sửa thủ công — hiểu logic, không chỉ bấm Accept.\n4. Stage → Continue rebase/merge → Push.",
+        "commands": "git fetch origin\ngit rebase origin/main\n# resolve → git add . && git rebase --continue\ngit push --force-with-lease",
+        "warning": "",
+        "note": ""
+      },
+      "github-desktop": {
+        "steps": "1. Update from `main` (merge hoặc rebase theo setting).\n2. Mở conflicted files.\n3. Resolve → commit merge/rebase.\n4. Push branch → PR xanh conflict.",
+        "commands": "git fetch origin\ngit rebase origin/main\n# resolve → git add . && git rebase --continue\ngit push --force-with-lease",
+        "warning": "",
+        "note": ""
+      },
+      "fork": {
+        "steps": "1. Rebase/Merge `main` vào feature.\n2. **Conflict Resolver**.\n3. Sửa → Continue → Push.",
+        "commands": "git fetch origin\ngit rebase origin/main\n# resolve → git add . && git rebase --continue\ngit push --force-with-lease",
+        "warning": "",
+        "note": ""
+      }
+    }
   },
   {
     "id": "09",
@@ -124,6 +332,32 @@ window.SCENARIOS = [
       "github-desktop": null,
       "fork": null
     },
-    "takeaway": "Ngắn hạn: `cherry-pick` các commit/feature đã duyệt. Dài hạn: mỗi feature một branch + PR riêng vào `main`."
+    "takeaway": "Ngắn hạn: `cherry-pick` các commit/feature đã duyệt. Dài hạn: mỗi feature một branch + PR riêng vào `main`.",
+    "guides": {
+      "cli": {
+        "steps": "### Cách 1 — Cherry-pick\n\n```bash\ngit switch main\ngit pull origin main\ngit log dev --oneline\ngit cherry-pick aaa111   # Feature A\ngit cherry-pick ccc333   # Feature C\ngit push origin main\n```\n\n### Cách 2 — Feature branch độc lập (khuyến nghị)\n\n```text\nfeature/A → PR → main\nfeature/C → PR → main\n```\n\nTránh nhồi mọi thứ vào một `dev` khổng lồ nếu thường xuyên release từng phần.",
+        "commands": "git cherry-pick <commit-A>\ngit cherry-pick <commit-C>",
+        "warning": "Cherry-pick có thể conflict hoặc nhân đôi thay đổi nếu dependency commit không được pick đúng.",
+        "note": ""
+      },
+      "cursor-vscode": {
+        "steps": "1. Checkout `main`, pull.\n2. Command Palette / Git Graph → **Cherry Pick** commit A, C.\n3. Resolve nếu conflict → push.\n4. Hoặc mở PR từ `feature/A`, `feature/C`.",
+        "commands": "git cherry-pick <commit-A>\ngit cherry-pick <commit-C>",
+        "warning": "",
+        "note": ""
+      },
+      "github-desktop": {
+        "steps": "1. Checkout `main`.\n2. History của `dev` → Cherry-pick commit cần thiết (nếu phiên bản hỗ trợ) hoặc dùng CLI.\n3. Push `main` / tạo PR tương ứng.",
+        "commands": "git cherry-pick <commit-A>\ngit cherry-pick <commit-C>",
+        "warning": "",
+        "note": ""
+      },
+      "fork": {
+        "steps": "1. Checkout `main`.\n2. Chọn commit trên `dev` → **Cherry-pick**.\n3. Lặp cho từng feature được duyệt → Push.",
+        "commands": "git cherry-pick <commit-A>\ngit cherry-pick <commit-C>",
+        "warning": "",
+        "note": ""
+      }
+    }
   }
 ];

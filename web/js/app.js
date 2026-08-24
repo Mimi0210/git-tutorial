@@ -25,6 +25,12 @@
   const placeholder = document.getElementById("video-placeholder");
   const toolTabs = document.getElementById("tool-tabs");
   const drawerLinks = document.getElementById("drawer-links");
+  const drawerSteps = document.getElementById("drawer-steps");
+  const drawerCommands = document.getElementById("drawer-commands");
+  const drawerCommandsTitle = document.getElementById("drawer-commands-title");
+  const drawerStepsTitle = document.getElementById("drawer-steps-title");
+  const drawerWarn = document.getElementById("drawer-warn");
+  const drawerNote = document.getElementById("drawer-note");
 
   function escapeHtml(str) {
     return String(str)
@@ -32,6 +38,89 @@
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;")
       .replace(/"/g, "&quot;");
+  }
+
+  /** Lightweight markdown for guide steps (headings, lists, code, bold, inline code). */
+  function renderGuideMd(src) {
+    const text = String(src || "").trim();
+    if (!text) return "<p>—</p>";
+
+    const parts = [];
+    const fence = /```[\w]*\n([\s\S]*?)```/g;
+    let last = 0;
+    let m;
+    while ((m = fence.exec(text)) !== null) {
+      if (m.index > last) parts.push({ type: "md", value: text.slice(last, m.index) });
+      parts.push({ type: "code", value: m[1].replace(/\n$/, "") });
+      last = m.index + m[0].length;
+    }
+    if (last < text.length) parts.push({ type: "md", value: text.slice(last) });
+
+    function inline(s) {
+      return escapeHtml(s)
+        .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+        .replace(/`([^`]+)`/g, "<code>$1</code>");
+    }
+
+    function renderMdBlock(block) {
+      const lines = block.replace(/^\n+|\n+$/g, "").split("\n");
+      if (!lines.length || (lines.length === 1 && !lines[0])) return "";
+      const out = [];
+      let listType = null;
+
+      function closeList() {
+        if (listType) {
+          out.push(`</${listType}>`);
+          listType = null;
+        }
+      }
+
+      lines.forEach((line) => {
+        const heading = line.match(/^###\s+(.+)$/);
+        const ul = line.match(/^[-*]\s+(.+)$/);
+        const ol = line.match(/^\d+\.\s+(.+)$/);
+
+        if (heading) {
+          closeList();
+          out.push(`<h4>${inline(heading[1])}</h4>`);
+          return;
+        }
+        if (ul) {
+          if (listType !== "ul") {
+            closeList();
+            listType = "ul";
+            out.push("<ul>");
+          }
+          out.push(`<li>${inline(ul[1])}</li>`);
+          return;
+        }
+        if (ol) {
+          if (listType !== "ol") {
+            closeList();
+            listType = "ol";
+            out.push("<ol>");
+          }
+          out.push(`<li>${inline(ol[1])}</li>`);
+          return;
+        }
+        if (!line.trim()) {
+          closeList();
+          return;
+        }
+        closeList();
+        out.push(`<p>${inline(line)}</p>`);
+      });
+      closeList();
+      return out.join("");
+    }
+
+    return parts
+      .map((p) =>
+        p.type === "code"
+          ? `<pre><code>${escapeHtml(p.value)}</code></pre>`
+          : renderMdBlock(p.value)
+      )
+      .join("");
   }
 
   function shortTitle(s) {
@@ -83,6 +172,47 @@
     document.getElementById("drawer-title").textContent = scenario.title;
     document.getElementById("drawer-takeaway").textContent = scenario.takeaway;
     document.getElementById("drawer-symptom").textContent = scenario.symptom;
+
+    const guide =
+      (scenario.guides && scenario.guides[toolKey]) ||
+      { steps: "", commands: "", warning: "", note: "" };
+
+    if (drawerStepsTitle) {
+      drawerStepsTitle.textContent =
+        toolKey === "cli" ? "Cách thực hiện (CLI)" : "Cách thực hiện";
+    }
+    if (drawerSteps) drawerSteps.innerHTML = renderGuideMd(guide.steps);
+
+    if (drawerCommandsTitle) {
+      drawerCommandsTitle.textContent =
+        toolKey === "cli" ? "Lệnh CLI tóm tắt" : "Equivalent CLI";
+    }
+    if (drawerCommands) {
+      const cmds = (guide.commands || "").trim() || "—";
+      drawerCommands.innerHTML = `<code>${escapeHtml(cmds)}</code>`;
+    }
+
+    if (drawerWarn) {
+      if (guide.warning) {
+        drawerWarn.hidden = false;
+        drawerWarn.innerHTML =
+          `<strong>Warning</strong>${renderGuideMd(guide.warning)}`;
+      } else {
+        drawerWarn.hidden = true;
+        drawerWarn.innerHTML = "";
+      }
+    }
+
+    if (drawerNote) {
+      if (guide.note) {
+        drawerNote.hidden = false;
+        drawerNote.innerHTML =
+          `<strong>Ghi chú</strong>${renderGuideMd(guide.note)}`;
+      } else {
+        drawerNote.hidden = true;
+        drawerNote.innerHTML = "";
+      }
+    }
 
     toolTabs.innerHTML = "";
     TOOLS.forEach((t) => {
@@ -149,19 +279,91 @@
 
   closeBtn.addEventListener("click", closeDrawer);
   overlay.addEventListener("click", closeDrawer);
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && drawer.classList.contains("is-open")) closeDrawer();
-  });
+
+  /* —— Multi-page deck (intro → table → checklist) —— */
+  const PAGES = ["intro", "compare", "checklist"];
+  const pageEls = PAGES.map((id) => document.getElementById(`page-${id}`));
+  const btnPrev = document.getElementById("btn-prev");
+  const btnNext = document.getElementById("btn-next");
+  const dots = Array.from(document.querySelectorAll(".pager__dot"));
+  let pageIndex = 0;
+
+  function showPage(index, opts) {
+    const updateHash = !opts || opts.updateHash !== false;
+    pageIndex = Math.max(0, Math.min(PAGES.length - 1, index));
+
+    pageEls.forEach((el, i) => {
+      if (!el) return;
+      const on = i === pageIndex;
+      el.hidden = !on;
+      el.classList.toggle("is-active", on);
+    });
+
+    dots.forEach((dot, i) => {
+      const on = i === pageIndex;
+      dot.classList.toggle("is-active", on);
+      if (on) dot.setAttribute("aria-current", "true");
+      else dot.removeAttribute("aria-current");
+    });
+
+    if (btnPrev) btnPrev.disabled = pageIndex === 0;
+    if (btnNext) btnNext.disabled = pageIndex === PAGES.length - 1;
+
+    if (updateHash) {
+      const name = PAGES[pageIndex];
+      const nextHash = name === "intro" ? "" : `#${name}`;
+      if ((location.hash || "") !== nextHash) {
+        history.replaceState(null, "", nextHash || location.pathname + location.search);
+      }
+    }
+  }
 
   function applyHash() {
-    const hash = (location.hash || "").replace(/^#/, "");
-    const m = hash.match(/^s0?(\d{1,2})(?:-(cli|cursor-vscode|github-desktop|fork))?$/i);
-    if (!m) return;
-    const id = m[1].padStart(2, "0");
-    const tool = (m[2] || "cli").toLowerCase();
-    const s = scenarios.find((x) => x.id === id);
-    if (s) openDrawer(s, tool);
+    const hash = (location.hash || "").replace(/^#/, "").toLowerCase();
+
+    const scenarioMatch = hash.match(
+      /^s0?(\d{1,2})(?:-(cli|cursor-vscode|github-desktop|fork))?$/i
+    );
+    if (scenarioMatch) {
+      showPage(1, { updateHash: false });
+      const id = scenarioMatch[1].padStart(2, "0");
+      const tool = (scenarioMatch[2] || "cli").toLowerCase();
+      const s = scenarios.find((x) => x.id === id);
+      if (s) openDrawer(s, tool);
+      return;
+    }
+
+    const pageIdx = PAGES.indexOf(hash);
+    if (pageIdx >= 0) {
+      showPage(pageIdx, { updateHash: false });
+      return;
+    }
+
+    showPage(0, { updateHash: false });
   }
+
+  if (btnPrev) btnPrev.addEventListener("click", () => showPage(pageIndex - 1));
+  if (btnNext) btnNext.addEventListener("click", () => showPage(pageIndex + 1));
+  dots.forEach((dot) => {
+    dot.addEventListener("click", () => showPage(Number(dot.dataset.page)));
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && drawer.classList.contains("is-open")) {
+      closeDrawer();
+      return;
+    }
+    if (drawer.classList.contains("is-open")) return;
+    const tag = (e.target && e.target.tagName) || "";
+    if (tag === "INPUT" || tag === "TEXTAREA" || e.target.isContentEditable) return;
+    if (e.key === "ArrowRight" || e.key === " ") {
+      e.preventDefault();
+      showPage(pageIndex + 1);
+    } else if (e.key === "ArrowLeft") {
+      e.preventDefault();
+      showPage(pageIndex - 1);
+    }
+  });
 
   window.addEventListener("hashchange", applyHash);
   renderTable();

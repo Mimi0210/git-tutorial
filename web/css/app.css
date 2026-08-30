@@ -552,9 +552,12 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -48%) scale(0.98);
-  width: min(720px, calc(100% - 1.5rem));
-  max-height: min(88vh, 900px);
-  overflow: auto;
+  width: min(96vw, 1600px);
+  height: min(92vh, 1080px);
+  max-height: 92vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
   background: #fff;
   border-radius: 12px;
   box-shadow: 0 28px 70px rgba(45, 55, 64, 0.25);
@@ -576,6 +579,7 @@ body {
   gap: 1rem;
   align-items: flex-start;
   margin-bottom: 1rem;
+  flex-shrink: 0;
 }
 
 .drawer__kicker {
@@ -612,6 +616,16 @@ body {
   flex-wrap: wrap;
   gap: 0.4rem;
   margin-bottom: 1rem;
+  flex-shrink: 0;
+}
+
+.drawer__content {
+  display: grid;
+  grid-template-columns: minmax(0, 1.85fr) minmax(280px, 22rem);
+  gap: 1.5rem;
+  align-items: stretch;
+  flex: 1;
+  min-height: 0;
 }
 
 .tool-tab {
@@ -650,11 +664,14 @@ body {
 .video-frame {
   background: #1a1f24;
   border-radius: 10px;
-  aspect-ratio: 16 / 9;
   overflow: hidden;
-  margin-bottom: 1rem;
+  margin-bottom: 0;
   display: grid;
   place-items: center;
+  align-self: stretch;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
 }
 
 .video-frame video {
@@ -662,6 +679,7 @@ body {
   height: 100%;
   display: block;
   background: #000;
+  object-fit: contain;
 }
 
 .video-placeholder {
@@ -670,6 +688,13 @@ body {
   padding: 1rem;
   font-size: 0.9rem;
   line-height: 1.45;
+}
+
+.drawer__body {
+  overflow-y: auto;
+  min-height: 0;
+  padding-right: 0.35rem;
+  overscroll-behavior: contain;
 }
 
 .drawer__body h3 {
@@ -820,6 +845,22 @@ body {
   .tool-grid {
     grid-template-columns: 1fr 1fr;
   }
+
+  .drawer__content {
+    grid-template-columns: 1fr;
+    overflow-y: auto;
+  }
+
+  .video-frame {
+    height: auto;
+    aspect-ratio: 16 / 9;
+    max-height: min(48vh, 420px);
+  }
+
+  .drawer__body {
+    overflow: visible;
+    padding-right: 0;
+  }
 }
 
 @media (max-width: 640px) {
@@ -844,6 +885,13 @@ body {
   .check {
     width: 1.75rem;
     height: 1.75rem;
+  }
+
+  .drawer {
+    width: calc(100vw - 1rem);
+    height: min(94vh, 1080px);
+    max-height: 94vh;
+    padding: 1rem 1rem 1.15rem;
   }
 
   .pager {

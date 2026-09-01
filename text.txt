@@ -1,2 +1,2 @@
 commit main
-Fork update main nhưng quên tạo branch
+Fork update main nhưng quên tạo branch trên fork

@@ -4,10 +4,19 @@
 
 ## Steps
 
-1. Source Control → chọn file → xem **diff**.
-2. Click **Discard Changes** trên file (hoặc Discard All).
-3. Một số extension hỗ trợ discard từng hunk.
-4. Unstage: trừ staging rồi discard nếu cần.
+**Tình huống:** Đã sửa hoặc tạo file nhưng chưa commit — muốn bỏ changes.
+
+### Bỏ changes chưa commit
+
+1. Sửa file (ví dụ thêm dòng vào `text.txt`).
+2. Tạo file mới (ví dụ `new/Test`, `video/test 2`) — hiện **Untracked**.
+3. Mở **Source Control** → thấy **Changes**: file **Modified** và **Untracked**.
+4. Chọn file cần bỏ → bấm icon **Discard Changes** (mũi tên cong) hoặc **right-click → Discard Changes**.
+5. File **Untracked**: hộp thoại **Move to Recycle Bin** → xác nhận.
+6. File **Modified**: discard hoàn tác nội dung về commit gần nhất.
+7. Lặp cho từng file (hoặc **Discard All** nếu muốn bỏ hết).
+
+**Nhớ:** Discard không khôi phục được trừ khi đã **stash** hoặc file untracked còn trong Recycle Bin.
 
 ## Equivalent CLI
 
@@ -21,6 +30,6 @@ git checkout main -- tenfile.abc
 
 ## Video
 
-Đặt file tại `demo/videos/04-cursor-vscode.mp4` rồi cập nhật link trong web UI.
+Demo: [`video/04-cursor.mp4`](../../video/04-cursor.mp4)
 
 [← Scenario overview](./README.md) · [All scenarios](../../README.md#scenarios)

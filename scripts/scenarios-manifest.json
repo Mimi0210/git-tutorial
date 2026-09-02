@@ -127,9 +127,9 @@
     "symptom": "I want to remove my changes",
     "videos": {
       "cli": "video/example-4.mp4",
-      "cursor-vscode": null,
-      "github-desktop": null,
-      "fork": null
+      "cursor-vscode": "video/04-cursor.mp4",
+      "github-desktop": "video/04-github-desktop.mp4",
+      "fork": "video/04-fork.mp4"
     },
     "takeaway": "`git restore` hoàn tác working tree về HEAD. Nếu chưa chắc → `git stash` an toàn hơn. Staged cần `--staged` rồi mới restore nội dung.",
     "guides": {
@@ -140,19 +140,19 @@
         "note": ""
       },
       "cursor-vscode": {
-        "steps": "1. Source Control → chọn file → xem **diff**.\n2. Click **Discard Changes** trên file (hoặc Discard All).\n3. Một số extension hỗ trợ discard từng hunk.\n4. Unstage: trừ staging rồi discard nếu cần.",
+        "steps": "**Tình huống:** Đã sửa hoặc tạo file nhưng chưa commit — muốn bỏ changes.\n\n### Bỏ changes chưa commit\n\n1. Sửa file (ví dụ thêm dòng vào `text.txt`).\n2. Tạo file mới (ví dụ `new/Test`, `video/test 2`) — hiện **Untracked**.\n3. Mở **Source Control** → thấy **Changes**: file **Modified** và **Untracked**.\n4. Chọn file cần bỏ → bấm icon **Discard Changes** (mũi tên cong) hoặc **right-click → Discard Changes**.\n5. File **Untracked**: hộp thoại **Move to Recycle Bin** → xác nhận.\n6. File **Modified**: discard hoàn tác nội dung về commit gần nhất.\n7. Lặp cho từng file (hoặc **Discard All** nếu muốn bỏ hết).\n\n**Nhớ:** Discard không khôi phục được trừ khi đã **stash** hoặc file untracked còn trong Recycle Bin.",
         "commands": "git restore tenfile.abc\ngit checkout tenfile.abc\ngit log --oneline\ngit checkout 4b6bd5d -- tenfile.abc\ngit checkout main -- tenfile.abc",
         "warning": "",
         "note": ""
       },
       "github-desktop": {
-        "steps": "1. Tab **Changes** → chọn file → xem diff.\n2. Right-click → **Discard changes**.\n3. Hoặc discard toàn bộ changes trong changeset.",
+        "steps": "**Tình huống:** Đã sửa hoặc tạo file nhưng chưa commit — muốn bỏ changes.\n\n### Bỏ changes chưa commit\n\n1. Sửa file (ví dụ `text.txt`) trên branch hiện tại (ví dụ `main`).\n2. Tạo file mới (ví dụ `video/test`).\n3. Mở GitHub Desktop → tab **Changes** hiện file đã đổi.\n4. Xem **diff** để chắc muốn bỏ.\n5. **Right-click** file mới (ví dụ `video/test`) → **Discard changes…**\n6. Hộp thoại **Confirm discard changes** → **Discard changes**.\n7. **Right-click** file đã sửa (ví dụ `text.txt`) → **Discard changes…** (hoặc discard all).\n8. Hộp thoại **Confirm discard all changes** → **Discard all changes**.\n9. Tab **Changes** hiện **No local changes**.\n\n**Nhớ:** Xem diff trước khi discard — thao tác này không undo được ngoài Recycle Bin (file mới).",
         "commands": "git restore tenfile.abc\ngit checkout tenfile.abc\ngit log --oneline\ngit checkout 4b6bd5d -- tenfile.abc\ngit checkout main -- tenfile.abc",
         "warning": "",
         "note": ""
       },
       "fork": {
-        "steps": "1. Working Directory → chọn file → xem diff.\n2. **Discard** file / hunk (nếu hỗ trợ).\n3. Xác nhận trước khi discard hàng loạt.",
+        "steps": "**Tình huống:** Đã sửa hoặc tạo file nhưng chưa commit — muốn bỏ changes.\n\n### Bỏ changes chưa commit\n\n1. Sửa file (ví dụ `text.txt`) trên branch hiện tại (ví dụ `Fork-branch`).\n2. Tạo file mới (ví dụ `video/test`, `video/test 2`).\n3. Mở Fork → **Local Changes** hiện file **Unstaged**.\n4. Chọn file/folder → xem **diff** bên phải.\n5. **Right-click** file hoặc folder trong **Unstaged** → **Discard changes…**\n6. Lặp cho từng file (có thể discard cả folder `video`).\n7. **Local Changes** trống — không còn thay đổi chưa commit.\n\n**Nhớ:** Discard xóa changes vĩnh viễn (file mới sẽ bị xóa). Cân nhắc **Stash** nếu chưa chắc.",
         "commands": "git restore tenfile.abc\ngit checkout tenfile.abc\ngit log --oneline\ngit checkout 4b6bd5d -- tenfile.abc\ngit checkout main -- tenfile.abc",
         "warning": "",
         "note": ""

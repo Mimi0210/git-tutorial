@@ -31,9 +31,9 @@ Modified: file A, B, C
 ## Video
 
 - **CLI:** [`video/example-4.mp4`](../../video/example-4.mp4)
-- **Cursor / VS Code:** _Chưa có video — thêm vào `demo/videos/04-cursor-vscode.mp4`_
-- **GitHub Desktop:** _Chưa có video — thêm vào `demo/videos/04-github-desktop.mp4`_
-- **Fork:** _Chưa có video — thêm vào `demo/videos/04-fork.mp4`_
+- **Cursor / VS Code:** [`video/04-cursor.mp4`](../../video/04-cursor.mp4)
+- **GitHub Desktop:** [`video/04-github-desktop.mp4`](../../video/04-github-desktop.mp4)
+- **Fork:** [`video/04-fork.mp4`](../../video/04-fork.mp4)
 
 ## Key takeaway
 

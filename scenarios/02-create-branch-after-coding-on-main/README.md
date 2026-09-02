@@ -39,9 +39,9 @@ main
 ## Video
 
 - **CLI:** [`video/example-2.mp4`](../../video/example-2.mp4)
-- **Cursor / VS Code:** _Chưa có video — thêm vào `demo/videos/02-cursor-vscode.mp4`_
-- **GitHub Desktop:** _Chưa có video — thêm vào `demo/videos/02-github-desktop.mp4`_
-- **Fork:** _Chưa có video — thêm vào `demo/videos/02-fork.mp4`_
+- **Cursor / VS Code:** [`video/02-cursor.mp4`](../../video/02-cursor.mp4)
+- **GitHub Desktop:** [`video/02-github-desktop.mp4`](../../video/02-github-desktop.mp4)
+- **Fork:** [`video/02-fork.mp4`](../../video/02-fork.mp4)
 
 ## Key takeaway
 

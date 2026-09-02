@@ -4,12 +4,19 @@
 
 ## Steps
 
-1. **Source Control** → menu branch (status bar hoặc `...`).
-2. **Create Branch...** → đặt tên `feature/my-feature`.
-3. Stage + Commit trên branch mới.
-4. Publish branch / Push.
+**Tình huống:** Đang ở `main`, đã sửa file nhưng chưa commit — cần tách sang branch mới.
 
-Nếu đã commit trên main: tạo branch từ commit hiện tại, rồi checkout main và Reset (hard) về commit trước — chỉ khi chưa push.
+### Tạo branch và commit
+
+1. Sửa file trên `main` (ví dụ `text.txt`).
+2. Mở **Source Control** → thấy file **Modified**.
+3. Bấm **+** để **Stage** thay đổi.
+4. Click tên branch `main` ở **status bar** → **+ Create new branch...**
+5. Nhập tên branch (ví dụ `Cursor-branch`) → Enter.
+6. Điền commit message → bấm **Commit** (commit trên branch mới).
+7. **Sync / Push** để đẩy branch lên remote.
+
+**Nhớ:** Thay đổi chưa commit sẽ đi theo khi tạo branch mới. Đừng commit trực tiếp lên `main` nếu nhận ra đang code nhầm branch.
 
 ## Equivalent CLI
 
@@ -21,6 +28,6 @@ git reset HEAD~1
 
 ## Video
 
-Đặt file tại `demo/videos/02-cursor-vscode.mp4` rồi cập nhật link trong web UI.
+Demo: [`video/02-cursor.mp4`](../../video/02-cursor.mp4)
 
 [← Scenario overview](./README.md) · [All scenarios](../../README.md#scenarios)

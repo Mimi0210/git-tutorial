@@ -159,9 +159,9 @@ main
     takeaway: `Uncommitted changes đi theo khi bạn \`git switch -c\`. Nếu đã commit trên main chưa push: tạo branch tại HEAD rồi reset main về trước commit đó.`,
     videos: {
       cli: "video/example-2.mp4",
-      "cursor-vscode": null,
-      "github-desktop": null,
-      fork: null,
+      "cursor-vscode": "video/02-cursor.mp4",
+      "github-desktop": "video/02-github-desktop.mp4",
+      fork: "video/02-fork.mp4",
     },
     cli: {
       steps: `**Tình huống:** Đang ở \`main\`, đã code hoặc đã commit, muốn tách sang nhánh mới để làm merge request.
@@ -205,24 +205,51 @@ Vẫn dùng \`git reset HEAD~1\` nếu commit đó chưa được merge — **ch
       warning: `\`git reset --hard\` xóa uncommitted changes trên working tree. Chỉ dùng khi đã chắc chắn.`,
     },
     cursor: {
-      steps: `1. **Source Control** → menu branch (status bar hoặc \`...\`).
-2. **Create Branch...** → đặt tên \`feature/my-feature\`.
-3. Stage + Commit trên branch mới.
-4. Publish branch / Push.
+      steps: `**Tình huống:** Đang ở \`main\`, đã sửa file nhưng chưa commit — cần tách sang branch mới.
 
-Nếu đã commit trên main: tạo branch từ commit hiện tại, rồi checkout main và Reset (hard) về commit trước — chỉ khi chưa push.`,
+### Tạo branch và commit
+
+1. Sửa file trên \`main\` (ví dụ \`text.txt\`).
+2. Mở **Source Control** → thấy file **Modified**.
+3. Bấm **+** để **Stage** thay đổi.
+4. Click tên branch \`main\` ở **status bar** → **+ Create new branch...**
+5. Nhập tên branch (ví dụ \`Cursor-branch\`) → Enter.
+6. Điền commit message → bấm **Commit** (commit trên branch mới).
+7. **Sync / Push** để đẩy branch lên remote.
+
+**Nhớ:** Thay đổi chưa commit sẽ đi theo khi tạo branch mới. Đừng commit trực tiếp lên \`main\` nếu nhận ra đang code nhầm branch.`,
     },
     desktop: {
-      steps: `1. **Current Branch** → **New Branch...**
-2. Đặt tên feature branch (tạo từ current HEAD).
-3. Commit (nếu chưa) rồi **Publish branch**.
-4. Nếu cần dọn main local: checkout \`main\` → History → Reset to previous commit (cẩn thận, chưa push).`,
+      steps: `**Tình huống:** Đang ở \`main\`, đã sửa file nhưng chưa commit — cần tách sang branch mới.
+
+### Tạo branch và commit
+
+1. Sửa file trên \`main\` → tab **Changes** hiện file đã đổi.
+2. **Current Branch** → **New Branch...**
+3. Hộp thoại **Create a branch** → nhập tên (ví dụ \`Branch-1\`) → **Create branch**.
+4. Hộp thoại **Switch branch** → chọn **Bring my changes to Branch-1** → **Switch branch**.
+5. Điền **Summary** (ví dụ \`create branch\`) → **Commit to Branch-1**.
+6. Bấm **Publish branch** / **Push origin** để đẩy lên remote.
+
+**Nhớ:** Chọn **Bring my changes** để thay đổi chưa commit chuyển sang branch mới, không bỏ lại trên \`main\`.`,
     },
     fork: {
-      steps: `1. **Branch → New Branch...**
-2. Tạo \`feature/...\` từ HEAD hiện tại.
-3. Commit + Push branch mới.
-4. Quay lại \`main\` và reset nếu commit nhầm chưa được share.`,
+      steps: `**Tình huống:** Đang ở \`main\`, đã sửa file nhưng chưa commit — cần tách sang branch mới.
+
+### Tạo branch và commit
+
+1. Sửa file trên \`main\` → **Local Changes** hiện 1 file **Unstaged**.
+2. **Branch → Create Branch...** (hoặc nút **Branch** trên toolbar).
+3. Hộp thoại **Create Branch**:
+   - **Create branch at:** \`main\`
+   - **Branch name:** ví dụ \`Fork-branch\`
+   - Bật **Check out after create**
+   - **Local changes:** chọn **Stash and reapply**
+   - Bấm **Create and Checkout**
+4. Bấm **Stage** → nhập **Commit subject** → **Commit**.
+5. **Push** \`Fork-branch\` lên \`origin\`.
+
+**Nhớ:** **Stash and reapply** giúp đưa thay đổi chưa commit từ \`main\` sang branch mới mà không mất code.`,
     },
   },
   {
